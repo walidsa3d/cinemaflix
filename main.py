@@ -7,12 +7,12 @@ from prettytable import PrettyTable
 class TSearch:  
    
     def display_torrents(self,torrent_list):
-        x = PrettyTable(["Index","Name", "Seeds", "Size"])
-        x.align["Name"] = "l" # Left align city names
-        torrs=dict(enumerate(torrent_list))
+        results = PrettyTable(["Index","Name","Quality", "Seeds", "Size"])
+        results.align["Name"] = "l" # Left align city names
+        # torrs=dict(enumerate(torrent_list))
         for index,torrent in enumerate(torrent_list):
-            x.add_row([index,torrent.title,torrent.seeds, str(torrent.size)])
-        print x
+            results.add_row([index,torrent.title,torrent.quality,torrent.seeds, str(torrent.size)])
+        print results
 
 
 
@@ -27,7 +27,7 @@ class TSearch:
         if(args.provider=="yts"):
             torrents=yts.search(args.query)
         if(args.provider=="tpb"):
-            tpb.search(args.query)
+            torrents=tpb.search(args.query)
         self.display_torrents(torrents)
 
 if __name__ == '__main__':
