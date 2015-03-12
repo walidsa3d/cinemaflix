@@ -1,36 +1,34 @@
-import requests
-import json
-import math
+import argparse
+import yts
+import kickass
+import tpb
+from prettytable import PrettyTable
 
-def yts_search(query):
-    url="http://yts.re"
-    search_url = url + '/api/v2/list_movies.json?query_term=' +query+ '&sort=seeds&order=desc&set=1'
-    response=requests.get(search_url)
-    data=json.loads(response.text)
-    for movie in data['data']['movies']:
-        print movie['title_long']
-     
-def kickass_search(query):
-    url="http://kickass.to"
-    search_url = url + '/json.php?q=' + query + '&field=seeders&order=desc&page=1'
-    response=requests.get(search_url)
-    data=json.loads(response.text)
-    for movie in data['list']:
-        print movie['title']+" "+str(movie['seeds'])+" "+ToSize(movie['size'])
-
-def tpb_search(query):
-    url="http://thepiratebay.se"
-    search_url = url + "/search/" + query + "/0/7/0"
-    print search_url
+class TSearch:  
+   
+    def display_torrents(self,torrent_list):
+        x = PrettyTable(["Index","Name", "Seeds", "Size"])
+        x.align["Name"] = "l" # Left align city names
+        torrs=dict(enumerate(torrent_list))
+        for index,torrent in enumerate(torrent_list):
+            x.add_row([index,torrent.title,torrent.seeds, str(torrent.size)])
+        print x
 
 
-    
-def ToSize(bytes):
-    sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    if bytes == 0:
-        return "0 Byte"
-    i = int(math.floor(math.log(bytes) / math.log(1024)))
-    r=round(bytes / math.pow(1024, i), 2) 
-    return str(r)+ '' + sizes[i]
 
-kickass_search("gladiator")
+    def main(self):
+        parser = argparse.ArgumentParser(description='A Multi-Provider Torrent Search API')
+        parser.add_argument('provider')
+        parser.add_argument('query')
+        torrents=[]
+        args = parser.parse_args()
+        if(args.provider=="kickass"):
+            torrents=kickass.search(args.query)
+        if(args.provider=="yts"):
+            torrents=yts.search(args.query)
+        if(args.provider=="tpb"):
+            tpb.search(args.query)
+        self.display_torrents(torrents)
+
+if __name__ == '__main__':
+    TSearch().main()
