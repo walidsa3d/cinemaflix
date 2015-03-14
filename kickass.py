@@ -5,7 +5,6 @@ from guessit import guess_movie_info
 def search(query):
         url="http://kickass.to"
         search_url = url + '/json.php?q=' + query + '&field=seeders&order=desc&page=1'
-        print search_url
         data=requests.get(search_url).json()
         torrents=[]
         for movie in data['list']:

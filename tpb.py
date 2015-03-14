@@ -1,8 +1,10 @@
-import requests
+from __future__ import unicode_literals
 from bs4 import BeautifulSoup as bs
 from torrent import Torrent
 from guessit import guess_movie_info
 import re
+import requests
+
 def search(query):
     url="https://thepiratebay.se"
     search_url = url + "/search/" + query + "/0/7/0"
@@ -21,7 +23,7 @@ def search(query):
          t.seeds = int(d[2].text)
          pattern = re.compile("Uploaded (.*), Size (.*), ULed by (.*)")
          match = pattern.match(d[1].font.text)
-         # t.size = match.groups()[1].replace('xa0',' ')
+         t.size = match.groups()[1].replace('xa0',' ')
          torrents.append(t)
     return torrents
     

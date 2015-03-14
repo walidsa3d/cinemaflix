@@ -12,7 +12,7 @@ class TSearch:
         results.align["Name"] = "l" # Left align city names
         #torrs=dict(enumerate(torrent_list))
         for index,torrent in enumerate(torrent_list):
-            results.add_row([index,torrent.title,torrent.quality,torrent.seeds, str(torrent.size)])
+            results.add_row([index,torrent.title,torrent.quality,torrent.seeds, unicode(torrent.size)])
         print results
 
 
