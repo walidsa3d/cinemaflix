@@ -3,6 +3,7 @@ import providers.yts as yts
 import providers.kickass as kickass
 import providers.tpb as tpb
 import providers.nyaa as nyaa
+import providers.limetorrents as lime
 from magneto import to_magnet
 from prettytable import PrettyTable
 import sys
@@ -33,6 +34,8 @@ class TSearch:
             torrents=nyaa.search(args.query)
         if(args.provider=="eztv"):
             torrents=eztv.search(args.query)
+        if(args.provider=="lime"):
+            torrents=lime.search(args.query)
         self.display_results(torrents)
         x=raw_input("Type number to choose movie or e to exit :\t")
         torrs=dict(enumerate(torrents))
