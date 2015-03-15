@@ -2,9 +2,10 @@ import requests
 import math
 from torrent import Torrent
 from guessit import guess_movie_info
+
 def search(query):
-        url="http://kickass.to"
-        search_url = url + '/json.php?q=' + query + '&field=seeders&order=desc&page=1'
+        base_url="http://kickass.to"
+        search_url = base_url + '/json.php?q=' + query + '&field=seeders&order=desc&page=1'
         data=requests.get(search_url).json()
         torrents=[]
         for movie in data['list']:

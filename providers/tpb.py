@@ -6,8 +6,8 @@ import re
 import requests
 
 def search(query):
-    url="https://thepiratebay.se"
-    search_url = url + "/search/" + query + "/0/7/0"
+    base_url="https://thepiratebay.se"
+    search_url = base_url + "/search/" + query + "/0/7/0"
     data=requests.get(search_url).text
     soup = bs(data)
     torrents = []

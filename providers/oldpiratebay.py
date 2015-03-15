@@ -3,10 +3,9 @@ from bs4 import BeautifulSoup as bs
 from torrent import Torrent
 
 def search(query):
-    url = "https://oldpiratebay.org/search.php?q=%s" %query
-    response = requests.get(url)
+    search_url = "https://oldpiratebay.org/search.php?q=%s" %query
+    response = requests.get(search_url)
     soup = bs(response.text)
-    print soup.select("#w0 > div.panel.panel-default > div.table-responsive > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2) > a")
     torrents = []
     for torrent in soup.findAll('tr'):
         t=Torrent()

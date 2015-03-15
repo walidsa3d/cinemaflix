@@ -2,12 +2,11 @@ import requests
 from torrent import Torrent
 
 def search(query):
-    url="http://yts.re"
-    search_url = url + '/api/v2/list_movies.json?query_term=' +query+ '&sort=seeds&order=desc&set=1'
-    print search_url
-    data=requests.get(search_url).json()
+    base_url="http://yts.re"
+    search_url = base_url + '/api/v2/list_movies.json?query_term=' +query+ '&sort=seeds&order=desc&set=1'
+    response=requests.get(search_url).json()
     torrents=[]
-    for movie in data['data']['movies']:
+    for movie in response['data']['movies']:
         for torrent in movie['torrents']:
             t=Torrent()
             t.title=movie['title_long']

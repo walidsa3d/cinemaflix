@@ -1,1 +1,1 @@
-A Python API for torrent searching
+A Multi-Provider Movie Search API

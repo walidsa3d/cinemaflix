@@ -1,13 +1,15 @@
 import argparse
-import yts
-import kickass
-import tpb
+import providers.yts as yts
+import providers.kickass as kickass
+import providers.tpb as tpb
+import providers.nyaa as nyaa
+from magneto import to_magnet
 from prettytable import PrettyTable
-from torrentutil import to_magnet
+import sys
 
 class TSearch:  
    
-    def display_torrents(self,torrent_list):
+    def display_results(self,torrent_list):
         results = PrettyTable(["Index","Name","Quality", "Seeds", "Size"])
         results.align["Name"] = "l" # Left align city names
         #torrs=dict(enumerate(torrent_list))
@@ -15,10 +17,8 @@ class TSearch:
             results.add_row([index,torrent.title,torrent.quality,torrent.seeds, unicode(torrent.size)])
         print results
 
-
-
     def main(self):
-        parser = argparse.ArgumentParser(description='A Multi-Provider Torrent Search API')
+        parser = argparse.ArgumentParser(description='A Multi-Provider Movie Search API')
         parser.add_argument('provider')
         parser.add_argument('query')
         torrents=[]
@@ -29,10 +29,20 @@ class TSearch:
             torrents=yts.search(args.query)
         if(args.provider=="tpb"):
             torrents=tpb.search(args.query)
-        self.display_torrents(torrents)
-        x=raw_input("choose movie :\t")
+        if(args.provider=="nyaa"):
+            torrents=nyaa.search(args.query)
+        if(args.provider=="eztv"):
+            torrents=eztv.search(args.query)
+        self.display_results(torrents)
+        x=raw_input("Type number to choose movie or e to exit :\t")
         torrs=dict(enumerate(torrents))
-        print to_magnet(torrs[int(x)].torrent_url)
+        while(int(x) >= len(torrs)):
+            print "Wrong number \n"
+            x=raw_input("Type number to choose movie or e to exit :\t")
+        if x=="e":
+            sys.exit()
+        else:
+            print to_magnet(torrs[int(x)].torrent_url)
 
 if __name__ == '__main__':
     TSearch().main()
