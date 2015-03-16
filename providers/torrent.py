@@ -1,4 +1,4 @@
-class Torrent:
+class Torrent(object):
 	def __init__(self):
 		self.title=""
 		self.torrent_url=""

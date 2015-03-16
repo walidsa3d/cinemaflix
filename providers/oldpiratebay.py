@@ -7,12 +7,10 @@ def search(query):
     response = requests.get(search_url)
     soup = bs(response.text)
     torrents = []
-    for torrent in soup.findAll('tr'):
+    for tr in soup.findAll('tr'):
         t=Torrent()
-        t.size = torrent.find('td', attrs={'class': 'size-row'})
-        t.seeds = torrent.find('td', attrs={'class': 'seeders-row'})
-        t.torrent_url = torrent.find('a', attrs={'title': 'MAGNET LINK'})['href']
-        t.title=torrent.find('span').text
+        cols = tr.find_all('td')[1:]
+        print cols[1].find('a')
         torrents.append(t)
     return torrents
 

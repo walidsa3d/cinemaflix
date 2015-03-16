@@ -1,6 +1,6 @@
 import requests
 from torrent import Torrent
-
+from operator import attrgetter
 def search(query):
     base_url="http://yts.re"
     search_url = base_url + '/api/v2/list_movies.json?query_term=' +query+ '&sort=seeds&order=desc&set=1'
