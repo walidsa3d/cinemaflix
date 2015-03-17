@@ -9,7 +9,7 @@ def search(query):
     for movie in response['data']['movies']:
         for torrent in movie['torrents']:
             t=Torrent()
-            t.title=movie['title_long']
+            t.title=movie['title_long']+" "+torrent['quality']
             t.quality=torrent['quality']
             t.seeds=torrent['seeds']
             t.size=torrent['size']

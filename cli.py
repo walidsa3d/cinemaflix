@@ -1,19 +1,18 @@
-import argparse
 import providers.yts as yts
 import providers.kickass as kickass
 import providers.tpb as tpb
 import providers.nyaa as nyaa
 import providers.limetorrents as lime
 from magneto import to_magnet
-from prettytable import PrettyTable
 from painter import paint
 import sys
 import inquirer
 from termcolor import colored
 from operator import attrgetter
+
 class TSearch:  
    
-    def display(self, torrent_list):
+    def display_results(self, torrent_list):
         for index,torrent in enumerate(torrent_list):
             index=colored(index,'red',attrs=['blink'])
             title=colored(unicode(torrent.title),'cyan')
@@ -21,9 +20,9 @@ class TSearch:
             seeds=colored(torrent.seeds,'white',attrs=['bold'])
             print index+" "+title+" "+size+" "+seeds
 
-    def sort_torrents(self,torrent_list,criteria):
+    def sort_results(self,torrent_list,criteria):
         return sorted(torrent_list,key=attrgetter(criteria),reverse=True)
-    def filter_torrents(self,torrent_list):
+    def filter_results(self,torrent_list,criteria):
         return [x for x in torrent_list if x['seeds']>=100]
     def main(self):
         sites=['Yts','Kickass','ThePirateBay','LimeTorrents']
@@ -44,7 +43,7 @@ class TSearch:
             torrents=tpb.search(query)
         if(site=="limetorrents"):
             torrents=lime.search(query)
-        self.display(self.sort_torrents(torrents,'seeds'))
+        self.display_results(self.sort_results(torrents,'seeds'))
         x=raw_input("Type index to choose movie or e to exit :\t")
         torrs=dict(enumerate(torrents))
         while(int(x) >= len(torrs)):
