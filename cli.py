@@ -3,8 +3,9 @@ import providers.kickass as kickass
 import providers.tpb as tpb
 import providers.nyaa as nyaa
 import providers.limetorrents as lime
+from providers.t411 import T411 as t411
+import providers.cpabsien as cpabsien
 from magneto import to_magnet
-from painter import paint
 import sys
 import inquirer
 from termcolor import colored
@@ -25,7 +26,7 @@ class TSearch:
     def filter_results(self,torrent_list,criteria):
         return [x for x in torrent_list if x['seeds']>=100]
     def main(self):
-        sites=['Yts','Kickass','ThePirateBay','LimeTorrents']
+        sites=['Yts','Kickass','ThePirateBay','LimeTorrents',"T411",'Cpabsien']
         subs = [
               inquirer.List('site',
                             message="Choose a Provider",
@@ -43,6 +44,10 @@ class TSearch:
             torrents=tpb.search(query)
         if(site=="limetorrents"):
             torrents=lime.search(query)
+        if(site=="cpabsien"):
+            torrents=cpabsien.search(query)
+        if(site=="t411"):
+            torrents=t411().search(query)
         self.display_results(self.sort_results(torrents,'seeds'))
         x=raw_input("Type index to choose movie or e to exit :\t")
         torrs=dict(enumerate(torrents))
