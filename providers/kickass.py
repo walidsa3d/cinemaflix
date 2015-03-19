@@ -13,7 +13,7 @@ def search(query):
             g=guess_movie_info(movie['title'],info=['filename'])
             t.title=g['title']
             t.quality=g['screenSize'] if 'screenSize' in g else "Undefined"
-            t.seeds=str(movie['seeds'])
+            t.seeds=int(movie['seeds'])
             t.size=ToSize(movie['size'])
             t.torrent_url=movie['torrentLink']
             torrents.append(t)

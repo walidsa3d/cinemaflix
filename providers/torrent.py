@@ -3,5 +3,5 @@ class Torrent(object):
 		self.title=""
 		self.torrent_url=""
 		self.quality=""
-		self.seeds=""
+		self.seeds=0
 		self.size=""

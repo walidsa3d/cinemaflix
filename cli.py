@@ -17,7 +17,7 @@ class TSearch:
             print index+" "+title+" "+size+" "+seeds
 
     def main(self):
-        sites=['Yts','Kickass','ThePirateBay','LimeTorrents',"T411",'Cpabsien']
+        sites=['Yts','Kickass','ThePirateBay','OldPirateBay','LimeTorrents',"T411",'Cpabsien']
         subs = [
               inquirer.List('site',
                             message="Choose a Provider",

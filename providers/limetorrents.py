@@ -13,7 +13,7 @@ def search(query):
         t=Torrent()
         t.title=tr.select('.tt-name a')[1].text
         t.size=tr.select('.tdnormal')[1].text
-        t.seeds=tr.select('.tdseed')[0].text
+        t.seeds=int(tr.select('.tdseed')[0].text)
         t.torrent_url=tr.select('.tt-name a')[0].get('href')
         torrents.append(t)
     return torrents

@@ -5,6 +5,7 @@ import providers.nyaa as nyaa
 import providers.limetorrents as lime
 from providers.t411 import T411 as t411
 import providers.cpabsien as cpabsien
+import providers.oldpiratebay as oldtpb
 from operator import attrgetter
 
 def search(query,provider):
@@ -15,6 +16,8 @@ def search(query,provider):
          results=yts.search(query)
     if(provider=="thepiratebay"):
          results=tpb.search(query)
+    if(provider=="oldpiratebay"):
+         results=oldtpb.search(query)
     if(provider=="limetorrents"):
          results=lime.search(query)
     if(provider=="cpabsien"):

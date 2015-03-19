@@ -26,4 +26,5 @@ def search(query):
          t.size = match.groups()[1].replace('xa0',' ')
          torrents.append(t)
     return torrents
-    
+def get_top():
+    pass
