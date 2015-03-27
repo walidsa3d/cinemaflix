@@ -19,4 +19,5 @@ def search(query):
 		td=tr.find('td')
 		t.title=td.findNext('td').find('a').text
 		print td.findNext('td')
-search("gladiator")
+def get_top():
+	pass

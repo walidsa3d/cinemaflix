@@ -1,11 +1,9 @@
-
-from magneto import to_magnet
 import sys
 import inquirer
 from termcolor import colored
-from operator import attrgetter
-import api
-from peerflix import peerflix
+import providers.searchapi as api
+from utils.peerflix import peerflix
+
 class TSearch:  
    
     def display_results(self, torrent_list):
@@ -17,7 +15,7 @@ class TSearch:
             print index+" "+title+" "+size+" "+seeds
 
     def main(self):
-        sites=['Yts','Kickass','ThePirateBay','OldPirateBay','LimeTorrents',"T411",'Cpabsien']
+        sites=['Yts','Kickass','ThePirateBay','OldPirateBay','LimeTorrents',"T411",'Cpabsien','Strike']
         subs = [
               inquirer.List('site',
                             message="Choose a Provider",
@@ -26,6 +24,8 @@ class TSearch:
             ]
         site = inquirer.prompt(subs)['site'].lower()
         query=raw_input("Search Movie: ")
+        while(query==""):
+            query=raw_input("Search Movie: ")
         torrents=api.search(query,site)
         self.display_results(api.sort_results(torrents,'seeds'))
         x=raw_input("Type index to choose movie or e to exit :\t")
@@ -36,6 +36,7 @@ class TSearch:
         if x=="e":
             sys.exit()
         else:
-            peerflix().play(torrs[int(x)].torrent_url,"mpv")
+            peerflix().play(torrs[int(x)].torrent_url)
+        
 if __name__ == '__main__':
     TSearch().main()

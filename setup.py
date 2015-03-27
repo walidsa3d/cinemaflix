@@ -5,14 +5,14 @@ data_files = [
 ]
 
 setup(
-    name='mutator',
-    version='1.2',
-    description="A command line tool  to find movie torrents",
+    name='palmyra',
+    version='0.7',
+    description="A command line tool  to find and play movie torrents",
     long_description=open('README.md').read(),
     author='Walid Saad',
     author_email='walid.sa3d@gmail.com',
-    url='https://github.com/walidsa3d/mutator',
-    #download_url='https://s3.amazonaws.com/witsub/witsub-1.2.tar.gz',
+    url='https://github.com/walidsa3d/palmyra',
+    #download_url='',
     license="GPL",
     keywords="cli torrent movies",
     packages=['mutator'],
@@ -21,7 +21,7 @@ setup(
     # test_suite="witsub.test",
     entry_points={"console_scripts": ["mutator=mutator.cli"]},
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4  - Beta',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
         'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',

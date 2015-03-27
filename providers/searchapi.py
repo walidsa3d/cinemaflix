@@ -6,6 +6,7 @@ import providers.limetorrents as lime
 from providers.t411 import T411 as t411
 import providers.cpabsien as cpabsien
 import providers.oldpiratebay as oldtpb
+import providers.strike as strike
 from operator import attrgetter
 
 def search(query,provider):
@@ -24,7 +25,10 @@ def search(query,provider):
          results=cpabsien.search(query)
     if(provider=="t411"):
          results=t411().search(query)
-    return results
+    if(provider=="strike"):
+         results=strike.search(query)
+    return results[:50]
+    
 def sort_results(torrent_list,criteria):
     return sorted(torrent_list,key=attrgetter(criteria),reverse=True)
 def filter_results(torrent_list,criteria):

@@ -1,1 +1,1 @@
-A Multi-Provider Movie Search API
+A Multi-Provider Movie Torrent Search API

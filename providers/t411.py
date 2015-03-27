@@ -1,6 +1,7 @@
 import json
 import requests
 from torrent import Torrent
+
 HTTP_OK = 200
 API_URL = 'https://api.t411.me/%s'
 USER_FILE = 'user.json'
@@ -15,43 +16,22 @@ class T411(object):
         """ Get user credentials and authentificate it, if any credentials
         defined use token stored in user file
         """
-        
-        try :
-            with open(USER_FILE) as user_file:
-                self.user_credentials = json.loads(user_file.read())
-                if 'uid' not in self.user_credentials or 'token' not in \
-                        self.user_credentials:
+        with open(USER_FILE) as user_file:
+                self.login = json.loads(user_file.read())
+                print self.login
+                if 'user' not in self.login or 'pass' not in \
+                        self.login:
                     raise T411Exception('Wrong data found in user file')
-                else:
-                    # we have to ask the user for its credentials and get
-                    # the token from the API
-                    user = raw_input('Please enter username: ')
-                    password = raw_input('Please enter password: ')
-                    self.auth(user, password)
-        except IOError as e:
-            # we have to ask the user for its credentials and get
-            # the token from the API
-            user = raw_input('Please enter username: ')
-            password = raw_input('Please enter password: ')
-            print user,password
-            self.auth(user, password)
-        except T411Exception as e:
-            raise T411Exception(e.message)
-        except Exception as e:
-            raise T411Exception('Error while reading user credentials: %s.'\
-                    % e.message)
+        user = self.login['user']
+        password =self.login['pass']
+        self.auth(user, password)
 
     def auth(self, username, password) :
         """ Authentificate user and store token """
-        self.user_credentials = self.api_call('auth', params={'username': username, 'password': password})
-        if 'error' in self.user_credentials:
+        self.user_token = self.api_call('auth', params={'username': username, 'password': password})
+        if 'error' in self.user_token:
             raise T411Exception('Error while fetching authentication token: %s'\
-                    % self.user_credentials['error'])
-        #Create or update user file
-        user_data = json.dumps({'uid': '%s' % self.user_credentials['uid'], 'token': '%s' % self.user_credentials['token']})
-        print user_data
-        with open(USER_FILE, 'w') as user_file:
-             user_file.write(user_data)
+                    % self.user_token['error'])
         return True
 
     def api_call(self, method = '', params = None) :
@@ -59,7 +39,7 @@ class T411(object):
         url=API_URL % method
         headers={}
         if method != 'auth' :
-            headers['Authorization']=self.user_credentials['token']
+            headers['Authorization']=self.user_token['token']
         req = requests.post(url,data=params,headers=headers)
         if req.status_code == requests.codes.OK:
             return req.json()
@@ -73,6 +53,7 @@ class T411(object):
     def search(self,query):
         data=self.api_call('/torrents/search/%s?&limit=40' %query)
         torrents=[]
+        print data
         for result in data['torrents']:
             t=Torrent()
             t.title=result['name']

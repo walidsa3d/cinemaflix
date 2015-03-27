@@ -1,6 +1,7 @@
 import requests
 from torrent import Torrent
 from pyquery import PyQuery
+
 def search(query):
     search_url = "https://oldpiratebay.org/search.php?q=%s&iht=5&sort=-seeders" %query
     torrents = []
