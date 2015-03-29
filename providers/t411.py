@@ -1,6 +1,6 @@
 import json
 import requests
-from torrent import Torrent
+from models import Torrent
 
 HTTP_OK = 200
 API_URL = 'https://api.t411.me/%s'

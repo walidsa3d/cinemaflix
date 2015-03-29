@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
-from torrent import Torrent
+from models import Torrent
 
 def search(query):
     base_url="https://www.limetorrents.cc/"

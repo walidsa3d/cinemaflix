@@ -1,6 +1,7 @@
 import requests
 import json
-from torrent import Torrent
+from models import Torrent
+
 def search(query):
 	search_url="https://getstrike.net/api/torrents/search/?q=%s" %query
 	data=requests.get(search_url).json()

@@ -1,8 +1,8 @@
 import requests
 import math
-from torrent import Torrent
+from models import Torrent
 from guessit import guess_movie_info
-from utils.torrentutils import hsize
+from utils.torrentutils import torrentutils
 
 def search(query):
         base_url="http://kickass.to"
@@ -14,7 +14,7 @@ def search(query):
             g=guess_movie_info(movie['title'],info=['filename'])
             t.title=movie['title']
             t.seeds=int(movie['seeds'])
-            t.size=hsize(movie['size'])
+            t.size=torrentutils().hsize(movie['size'])
             t.torrent_url=movie['torrentLink']
             torrents.append(t)
         return torrents

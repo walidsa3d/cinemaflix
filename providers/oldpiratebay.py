@@ -1,5 +1,5 @@
 import requests
-from torrent import Torrent
+from models import Torrent
 from pyquery import PyQuery
 
 def search(query):

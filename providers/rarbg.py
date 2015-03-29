@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
-from torrent import Torrent
+from models import Torrent
+
 def search(query):
 	base_url='https://rarbg.com'
 	headers = {

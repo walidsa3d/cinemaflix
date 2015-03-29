@@ -1,12 +1,12 @@
-import providers.yts as yts
-import providers.kickass as kickass
-import providers.tpb as tpb
-import providers.nyaa as nyaa
-import providers.limetorrents as lime
-from providers.t411 import T411 as t411
-import providers.cpabsien as cpabsien
-import providers.oldpiratebay as oldtpb
-import providers.strike as strike
+import yts as yts
+import kickass as kickass
+import tpb as tpb
+import nyaa as nyaa
+import limetorrents as lime
+from t411 import T411 as t411
+import cpabsien as cpabsien
+import oldpiratebay as oldtpb
+import strike as strike
 from operator import attrgetter
 
 def search(query,provider):
@@ -27,6 +27,8 @@ def search(query,provider):
          results=t411().search(query)
     if(provider=="strike"):
          results=strike.search(query)
+    if(provider=="nyaa"):
+         results=nyaa.search(query)
     return results[:50]
     
 def sort_results(torrent_list,criteria):
