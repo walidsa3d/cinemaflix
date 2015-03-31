@@ -7,6 +7,7 @@ from t411 import T411 as t411
 import cpabsien as cpabsien
 import oldpiratebay as oldtpb
 import strike as strike
+from eztv import eztv
 from operator import attrgetter
 
 def search(query,provider):
@@ -29,7 +30,9 @@ def search(query,provider):
          results=strike.search(query)
     if(provider=="nyaa"):
          results=nyaa.search(query)
-    return results[:50]
+    if(provider=="eztv"):
+         results=eztv().search(query.split()[0],query.split()[1],query.split()[2])
+    return results
     
 def sort_results(torrent_list,criteria):
     return sorted(torrent_list,key=attrgetter(criteria),reverse=True)
