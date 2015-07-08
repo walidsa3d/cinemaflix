@@ -16,8 +16,7 @@ def search(query):
          d = result.find_all('td')
          a = d[1].find_all('a')
          g=guess_movie_info(unicode(a[0].string),info=['filename'])
-         year=str(g['year']) if 'year' in g else ""
-         t.title=g['title']+" "+year
+         t.title=a[0].string
          t.quality=g['screenSize'] if 'screenSize' in g else "Undefined"
          t.torrent_url = a[1]['href']
          t.seeds = int(d[2].text)

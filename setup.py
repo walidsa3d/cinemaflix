@@ -1,7 +1,7 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 data_files = [
-    ('share/doc/mutator', ['README.md'])
+    ('share/doc/palmyra', ['README.md'])
 ]
 
 setup(
@@ -15,11 +15,10 @@ setup(
     #download_url='',
     license="GPL",
     keywords="cli torrent movies",
-    packages=['mutator'],
+    packages=find_packages(),
     include_package_data=True,
     data_files=data_files,
-    # test_suite="witsub.test",
-    entry_points={"console_scripts": ["mutator=mutator.cli"]},
+    entry_points={"console_scripts": ["palmyra=cli:cli"]},
     classifiers=[
         'Development Status :: 4  - Beta',
         'Environment :: Console',
