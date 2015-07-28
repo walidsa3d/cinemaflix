@@ -5,6 +5,6 @@ class peerflix(object):
 	def __init__(self):
 		super(peerflix, self).__init__()
 	def play(self,link,player='vlc',subtitle=None):
-		command="peerflix '{}' --{} --subtitles '{}'".format(link,player,subtitle)
-		print command
+		peerflix_args="-d"
+		command="peerflix '{}' --{} --subtitles '{}' {}".format(link,player,subtitle,peerflix_args)
 		subprocess.Popen(command, shell=True) 	

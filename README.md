@@ -10,6 +10,9 @@ A cli application for searching movies and series on torrent sites and streaming
 - Limetorrents
 - Nyaa.se
 - Eztv
-##Install
+##TODO
+* Fix show name in EZTV
+* Add option to download torrents
+* Fix list numbering in YTS
 
 

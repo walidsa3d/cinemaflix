@@ -26,7 +26,7 @@ class eztv:
 			shows=json.load(f)
 		results=[]
 		for show in shows:
-			match=re.search(query,show['title'].lower())
+			match=re.search(query.lower(),show['title'].lower())
 			if match:
 				results.append(show)
 		return results
@@ -69,5 +69,4 @@ class eztv:
 
 if __name__ == '__main__':
 	eztv=eztv()
-	print eztv.search("game of thrones",4,10)
 

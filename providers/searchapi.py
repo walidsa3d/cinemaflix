@@ -9,6 +9,7 @@ import oldpiratebay as oldtpb
 import strike as strike
 from eztv import eztv
 from operator import attrgetter
+import re
 
 def search(query,provider):
     results=[]
@@ -31,7 +32,12 @@ def search(query,provider):
     if(provider=="nyaa"):
          results=nyaa.search(query)
     if(provider=="eztv"):
-         results=eztv().search(query.split()[0],query.split()[1],query.split()[2])
+        x=re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
+        m=x.match(query)
+        show=m.group(1)
+        season=m.group(3).strip().split(' ')[0]
+        episode=m.group(3).strip().split(' ')[1]
+        results=eztv().search(show,season,episode)
     return results
     
 def sort_results(torrent_list,criteria):

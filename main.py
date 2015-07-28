@@ -14,8 +14,8 @@ class TSearch:
             size=colored(unicode(torrent.size),'green',attrs=['bold'])
             seeds=colored(torrent.seeds,'white',attrs=['bold'])
             print index+" "+title+" "+size+" "+seeds
-    def cat_chooser(self):
-        categories=['Movies','Series']
+    def categories_menu(self):
+        categories=['Movies','Series','Anime']
         subs = [
               inquirer.List('category',
                             message="Choose a Category",
@@ -24,7 +24,7 @@ class TSearch:
             ]
         category = inquirer.prompt(subs)['category'].lower()
         return category
-    def movie_site_chooser(self):
+    def movies_menu(self):
         sites=['Yts','Kickass','ThePirateBay','OldPirateBay','LimeTorrents',"T411",'Cpabsien','Strike']
         subs = [
               inquirer.List('site',
@@ -34,8 +34,18 @@ class TSearch:
             ]
         site = inquirer.prompt(subs)['site'].lower()
         return site
-    def series_site_chooser(self):
-        sites=['EZTV','Nyaa']
+    def series_menu(self):
+        sites=['EZTV']
+        subs = [
+              inquirer.List('site',
+                            message="Choose a Provider",
+                            choices=sites,
+                        ),
+            ]
+        site = inquirer.prompt(subs)['site'].lower()
+        return site
+    def anime_menu(self):
+        sites=['Nyaa']
         subs = [
               inquirer.List('site',
                             message="Choose a Provider",
@@ -46,26 +56,30 @@ class TSearch:
         return site
 
     def main(self):
-        category=self.cat_chooser()
+        category=self.categories_menu()
         if category=="movies":
-            site=self.movie_site_chooser()
+            site=self.movies_menu()
         if category=="series" :
-            site=self.series_site_chooser()
+            site=self.series_menu()
+        if category=="anime" :
+            site=self.anime_menu()
         query=raw_input("Search: ")
         while(query==""):
             query=raw_input("Search: ")
-        torrents=api.search(query,site)
-        self.display_results(api.sort_results(torrents,'seeds'))
-        x=raw_input("Pick Movie Number Or Type e To Exit :\t")
-        torrs=dict(enumerate(torrents))
-        while(int(x) >= len(torrs)):
-            print "Wrong number \n"
-            x=raw_input("Type number to choose movie or e to exit :\t")
+        search_results=api.search(query,site)
+        self.display_results(api.sort_results(search_results,'seeds'))
+        x=raw_input("Pick Movie Number, Type [e] To Exit, [b] to go back :\t")
+        search_results=dict(enumerate(search_results))
         if x=="e":
             sys.exit()
+        elif x=="b":
+            self.main()
+        while(int(x) >= len(search_results)):
+            print "Wrong number \n"
+            x=raw_input("Pick movie, e to exit, b to go back :\t")       
         else:
-            movie=torrs[int(x)].title
-            movie_url=torrs[int(x)].torrent_url
+            movie=search_results[int(x)].title
+            movie_url=search_results[int(x)].torrent_url
             subtitle=opensubs().best_subtitle(movie, ["eng"])
             subtitle_file=opensubs().download_subtitle(subtitle,"/tmp/")
             peerflix().play(movie_url,subtitle=subtitle_file)
