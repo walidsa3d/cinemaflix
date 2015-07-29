@@ -6,7 +6,7 @@ import re
 import requests
 
 def search(query):
-    base_url="https://thepiratebay.se"
+    base_url="https://thepiratebay.la"
     search_url = base_url + "/search/" + query + "/0/7/0"
     data=requests.get(search_url).text
     soup = bs(data)

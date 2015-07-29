@@ -1,5 +1,6 @@
 import os, struct, xmlrpclib, commands, gzip, traceback, logging, requests,shutil
 import difflib
+import os
 
 OS_LANGS ={ "en": "eng","fr" : "fre","hu": "hun","cs": "cze","pl" : "pol","sk" : "slo", 
             "pt" : "por","pt-br" : "pob","es" : "spa","el" : "ell","ar":"ara",'sq':'alb',
@@ -11,6 +12,7 @@ OS_LANGS ={ "en": "eng","fr" : "fre","hu": "hun","cs": "cze","pl" : "pol","sk" :
             "sv":"swe","th":"tha","tr":"tur","uk":"ukr","vi":"vie"}
 class opensubtitles:
     def download_subtitle(self,subtitle,dldir):
+            dldir=os.path.expanduser(dldir)
             suburl = subtitle["link"]
             videofilename = subtitle["release"]
             srtbasefilename = videofilename.rsplit(".", 1)[0]
@@ -35,7 +37,7 @@ class opensubtitles:
     #     return best_match
     def best_subtitle(self,filename,langs):
         subtitles=self.search_by_name(filename, langs)
-        return subtitles[0]
+        return subtitles[0] if len(subtitles)>0 else None
         
     def search_by_name(self,query,langs):
         results=self.query(query)
@@ -77,10 +79,10 @@ class opensubtitles:
                     result["page"] = r['SubDownloadLink']
                     result["lang"] = r['SubLanguageID']
                     sublinks.append(result)
-            return sublinks     
-             # Search
             try:
                 server.LogOut(token)
             except:
                 log.error("Open subtitles could not be contacted for logout")
+            return sublinks     
+          
     

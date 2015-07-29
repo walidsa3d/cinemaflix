@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs
 from models import Torrent
 
 def search(query):
-    base_url="https://www.limetorrents.cc/"
+    base_url="http://www.limetorrents.in/"
     search_url=base_url+"search/movies/"+query+"/seeds/1/"
     response=requests.get(search_url).text
     soup=bs(response)

@@ -4,6 +4,7 @@ from termcolor import colored
 import providers.searchapi as api
 from utils.peerflix import peerflix
 from utils.subtitles import opensubtitles as opensubs
+from configobj import ConfigObj
 
 class TSearch:  
    
@@ -56,6 +57,7 @@ class TSearch:
         return site
 
     def main(self):
+        config = ConfigObj("config.ini")
         category=self.categories_menu()
         if category=="movies":
             site=self.movies_menu()
@@ -68,21 +70,27 @@ class TSearch:
             query=raw_input("Search: ")
         search_results=api.search(query,site)
         self.display_results(api.sort_results(search_results,'seeds'))
-        x=raw_input("Pick Movie Number, Type [e] To Exit, [b] to go back :\t")
+        user_input=raw_input("Pick Movie, [e]xit, [b]ack :\t")
         search_results=dict(enumerate(search_results))
-        if x=="e":
-            sys.exit()
-        elif x=="b":
-            self.main()
-        while(int(x) >= len(search_results)):
-            print "Wrong number \n"
-            x=raw_input("Pick movie, e to exit, b to go back :\t")       
+        while(not user_input.isdigit() or int(user_input) >= len(search_results)):
+            if user_input=="e":
+                sys.exit()
+            elif user_input=="b":
+                self.main()
+            else:
+                user_input=raw_input("Wrong Choice \nPick Movie, [e]xit, [b]ack :\t")       
+        movie=search_results[int(user_input)].title
+        movie_url=search_results[int(user_input)].torrent_url
+        subtitle=opensubs().best_subtitle(movie, ["eng"])
+        if subtitle is not None:
+            print "Subtitles found!\nDownloading.."
+            subtitle_file=opensubs().download_subtitle(subtitle,config['cache_path'])
+            print "Streaming "+movie
+            peerflix().play(movie_url,config['player'],config['cache_path'],subtitle=subtitle_file)
         else:
-            movie=search_results[int(x)].title
-            movie_url=search_results[int(x)].torrent_url
-            subtitle=opensubs().best_subtitle(movie, ["eng"])
-            subtitle_file=opensubs().download_subtitle(subtitle,"/tmp/")
-            peerflix().play(movie_url,subtitle=subtitle_file)
+            print "No subtitles found"
+            print "Streaming "+movie
+            peerflix().play(movie_url,config['player'],config['cache_path'])
         
 if __name__ == '__main__':
     TSearch().main()
