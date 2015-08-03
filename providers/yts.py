@@ -4,6 +4,7 @@ from torrent import Torrent
 def search(query):
     base_url="http://yts.to"
     search_url = base_url + '/api/v2/list_movies.json?query_term=' +query+ '&sort=seeds&order=desc&set=1'
+    print search_url
     response=requests.get(search_url).json()
     torrents=[]
     for movie in response['data']['movies']:
