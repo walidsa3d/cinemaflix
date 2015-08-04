@@ -1,8 +1,7 @@
 import requests
-import math
 from models import Torrent
 from guessit import guess_movie_info
-from utils.torrentutils import torrentutils
+from utils.utils import utils
 
 def search(query):
         base_url="http://kickass.to"

@@ -1,5 +1,5 @@
 import requests
-from torrent import Torrent
+from models import Torrent
 
 def search(query):
     base_url="http://yts.to"
@@ -11,7 +11,6 @@ def search(query):
         for torrent in movie['torrents']:
             t=Torrent()
             t.title=movie['title_long']+" "+torrent['quality']
-            t.quality=torrent['quality']
             t.seeds=torrent['seeds']
             t.size=torrent['size']
             t.torrent_url=torrent['url']

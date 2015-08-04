@@ -1,5 +1,5 @@
 import requests
-from torrent import Torrent
+from models import Torrent
 import re
 import json
 
@@ -38,20 +38,21 @@ class eztv:
 
 	def get_episodes(self,show_id):
 		show_url=self.base_url+"show/"+show_id
+		print show_url
 		data=requests.get(show_url).json()
 		episodes=[]
 		for episode in data['episodes']:
-			episodes.append({'num':episode['episode'],'season':episode['season'],'title':episode['title'], 'torrent_url':episode['torrents']["0"]['url']})
+			episodes.append({'num':episode['episode'],'season':episode['season'],'title':episode['title'], 'torrent_url':episode['torrents']["0"]['url'],'seeds':episode['torrents']["0"]['seeds']})
 		episodes=sorted(episodes,key=lambda k: (k['season'],k['num']))
 		return episodes
-	def search_episode(self,s,e,episodes):
+	def search_episode(self,showname,s,e,episodes):
 		t=Torrent()
 		torrents=[]
 		for episode in episodes:
 			if s==episode['season'] and episode['num']==e:
-				t.title=episode['title']
+				t.title=showname+'.'+'S'+str(s)+'E'+str(e)+':'+episode['title']
 				t.torrent_url=episode['torrent_url']
-				t.seeds=0
+				t.seeds=episode['seeds']
 				torrents.append(t)
 		return torrents
 
@@ -59,12 +60,11 @@ class eztv:
 		for episode in episodes:
 			print 'S%sE%s||%s' %(episode['season'],episode['num'], episode['title'])
 	def search(self,showname,season,episode):
-		show_id=self.search_show(showname)[0]['id']
+		show=self.search_show(showname)[0]
 		season=int(season)
 		episode=int(episode)
-		print show_id
-		all_episodes=self.get_episodes(show_id)
-		torrents=self.search_episode(season,episode,all_episodes)
+		all_episodes=self.get_episodes(show['id'])
+		torrents=self.search_episode(show['title'],season,episode,all_episodes)
 		return torrents
 
 if __name__ == '__main__':
