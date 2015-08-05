@@ -1,4 +1,12 @@
-import os, struct, xmlrpclib, commands, gzip, traceback, logging, requests,shutil
+import os
+import struct
+import xmlrpclib
+import commands
+import gzip
+import traceback
+import logging
+import requests
+import shutil
 import difflib
 import os
 

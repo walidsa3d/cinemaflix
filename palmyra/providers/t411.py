@@ -1,21 +1,21 @@
 import json
 import requests
 from models import Torrent
+from provider import BaseProvider
 
 HTTP_OK = 200
-API_URL = 'https://api.t411.me/%s'
 USER_FILE = 'user.json'
 
 class T411Exception(BaseException):
     pass
 
-class T411(object):
-    """ Base class for t411 interface """
+class t411(BaseProvider):
 
     def __init__(self, username = None, password = None) :
         """ Get user credentials and authentificate it, if any credentials
         defined use token stored in user file
         """
+        self.base_url='https://api.t411.me/%s'
         with open(USER_FILE) as user_file:
                 self.login = json.loads(user_file.read())
                 print self.login
@@ -28,13 +28,13 @@ class T411(object):
 
     def auth(self, username, password) :
         """ Authentificate user and store token """
-        self.user_token = self.api_call('auth', params={'username': username, 'password': password})
+        self.user_token = self._api_call('auth', params={'username': username, 'password': password})
         if 'error' in self.user_token:
             raise T411Exception('Error while fetching authentication token: %s'\
                     % self.user_token['error'])
         return True
 
-    def api_call(self, method = '', params = None) :
+    def _api_call(self, method = '', params = None) :
         """ Call T411 API """
         url=API_URL % method
         headers={}
@@ -46,12 +46,8 @@ class T411(object):
         else :
             raise T411Exception('Error while sending %s request: HTTP %s' % \
                     (method, req.status_code))
-
-    def me(self) :
-        """ Get personal informations """
-        return self.call('users/profile/%s' % self._uid)
     def search(self,query):
-        data=self.api_call('/torrents/search/%s?&limit=40' %query)
+        data=self._api_call('/torrents/search/%s?&limit=40' %query)
         torrents=[]
         print data
         for result in data['torrents']:
@@ -62,25 +58,6 @@ class T411(object):
             torrents.append(t)
         return torrents
 
-    def user(self, user_id) :
-        """ Get user informations """
-        return self.api_call('users/profile/%s' % user_id)
-
-    def categories(self) :
-        """ Get categories """
-        return self.api_call('categories/tree')
-
-    def terms(self) :
-        """ Get terms """
-        return self.api_call('terms/tree')
-
     def details(self, torrent_id) :
         """ Get torrent details """
-        return self.api_call('torrents/details/%s' % torrent_id)
-
-    def download(self, torrent_id) :
-        """ Download a torrent """
-        return self.api_call('torrents/download/%s' % torrent_id)
-
-if __name__ == '__main__':
-    print T411().search("gladiator")
+        return self._api_call('torrents/details/%s' % torrent_id)
