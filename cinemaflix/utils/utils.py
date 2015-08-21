@@ -9,9 +9,13 @@ import math
 import subprocess
 
 
-class utils:
+class utils(object):
 
-    def to_magnet(self, torrent_link):
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def to_magnet(torrent_link):
         """converts a torrent file to a magnet link"""
         response = requests.get(torrent_link, stream=True)
         with open('tempfile.torrent', 'w') as out_file:
@@ -27,9 +31,6 @@ class utils:
         magneturi = 'magnet:?xt=urn:btih:%s' % b32hash
         return magneturi
 
-    def to_torrent(self, magneturi):
-        pass
-
     @staticmethod
     def hsize(bytes):
         """converts a bytes to human-readable format"""
@@ -42,7 +43,7 @@ class utils:
 
     @staticmethod
     def ratio(leechs, seeds):
-        return seeds/leechs if leechs != 0 else float('inf')
+        return seeds / leechs if leechs != 0 else float('inf')
 
     def download_torrent(self, torrent_url, location):
         pass
@@ -52,3 +53,19 @@ class utils:
         command = "peerflix '{}' --{} --subtitles '{}' -f {} -d".format(
             link, player, subtitle, path)
         subprocess.Popen(command, shell=True)
+
+    @staticmethod
+    def playvid(link):
+        print link
+        command = "youstream {} --mpv".format(link)
+        print command
+        subprocess.Popen(command, shell=True)
+
+    @staticmethod
+    def check_yt(youtube_link):
+        url = "http://www.youtube.com/oembed?url={}&format=json".format(
+            youtube_link)
+        response = requests.head(url)
+        if response.status_code == 404:
+            return False
+        return True

@@ -11,7 +11,7 @@ class cpabsien(BaseProvider):
 	def search(self,query):
 		search_url=self.base_url+query+".html,trie-seeds-d"
 		response=requests.get(search_url).text
-		soup=bs(response)
+		soup=bs(response,"lxml")
 		torrents=[]
 		lines=soup.find_all('div',attrs={'class':'ligne0'})+soup.find_all('div',attrs={'class':'ligne1'})
 		for line in lines :
@@ -25,7 +25,7 @@ class cpabsien(BaseProvider):
 
 	def _torrent_link(self,page_url):
 		response=requests.get(page_url).text
-		soup=bs(response)
+		soup=bs(response,"lxml")
 		relative_link=soup.find('a',attrs={'id':'telecharger'}).get('href')
 		return "http://www.cpasbien.pw"+relative_link
 

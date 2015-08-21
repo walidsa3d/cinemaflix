@@ -16,7 +16,7 @@ class TSearch:
             title = colored(unicode(torrent.title), 'cyan')
             size = colored(unicode(torrent.size), 'green', attrs=['bold'])
             seeds = colored(torrent.seeds, 'white', attrs=['bold'])
-            print index+" "+title+" "+size+" "+seeds
+            print index + " " + title + " " + size + " " + seeds
 
     def categories_menu(self):
         categories = ['Movies', 'Series', 'Anime']
@@ -31,7 +31,7 @@ class TSearch:
 
     def movies_menu(self):
         sites = ['Yts', 'Kickass', 'ThePirateBay',
-                 'LimeTorrents', "T411", 'Cpabsien', 'Strike']
+                 "T411", 'Cpabsien', 'Strike', 'RedditMovies',"RedditDocus"]
         subs = [
             inquirer.List('site',
                           message="Choose a Provider",
@@ -99,12 +99,14 @@ class TSearch:
         if subtitle is not None:
             print "Subtitles found!\nDownloading.."
             subtitle_file = opensubs().download_subtitle(subtitle, cache_path)
-            print "Streaming "+movie
+            print "Streaming " + movie
+            #utils().playvid(movie_url)
             utils.play(movie_url, player, cache_path, subtitle=subtitle_file)
         else:
             print "No subtitles found"
-            print "Streaming "+movie
-            utils.play(movie_url, player, cache_path)
+            print "Streaming " + movie
+            # utils.play(movie_url, player, cache_path)
+            utils().playvid(movie_url)
 
 if __name__ == '__main__':
     TSearch().main()

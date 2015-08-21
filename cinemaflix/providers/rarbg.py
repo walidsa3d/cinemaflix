@@ -13,7 +13,7 @@ def search(query):
 	print search_url
 	response=requests.get(search_url,headers=headers).text
 	print response
-	soup=bs(response)
+	soup=bs(response,"lxml")
 	tabl=soup.find('table',attrs={'class':'lista2t'})
 	for tr in tabl.find_all('tr'):
 		t=Torrent()

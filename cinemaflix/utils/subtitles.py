@@ -34,15 +34,6 @@ class opensubtitles:
             f.close()
             os.remove(srtbasefilename+".srt.gz")
             return dldir+srtbasefilename+".srt"
-    # def best_match(self,subtitles,filename):
-    #     best_match=""
-    #     best_ratio=0
-    #     for subtitle in subtitles:
-    #         ratio=difflib.SequenceMatcher(None,filename,subtitle['release'])
-    #         if ratio>best_ratio:
-    #             best_ratio=ratio
-    #             best_match=subtitle
-    #     return best_match
     def best_subtitle(self,filename,langs):
         subtitles=self.search_by_name(filename, langs)
         return subtitles[0] if len(subtitles)>0 else None
