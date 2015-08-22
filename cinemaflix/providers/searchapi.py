@@ -1,50 +1,43 @@
 # walid.saad
 
-from yts import yts
-from kickass import kickass
-from tpb import tpb
-from nyaa import nyaa
-import limetorrents as lime
-from t411 import t411
-from cpabsien import cpabsien
-from strike import strike
-from eztv import eztv
+from yts import YTS
+from kickass import Kickass
+from tpb import TPB
+from nyaa import Nyaa
+from t411 import T411
+from cpabsien import Cpabsien
+from strike import Strike
+from eztv import Eztv
 from redditmovies import redditmovies
 from redditdocus import redditdocus
-from watchseries import watchseries
 from operator import attrgetter
-import re
-
+from constants import *
 
 def search(query, provider, sort=None, seeds=0, max=0):
     results = []
     sorts = ['seeds', 'size']
     if(provider == "kickass"):
-        results = kickass().search(query)
-    if(provider == "redditmovies"):
+        results = Kickass(KICKASS_URL).search(query)
+    elif(provider == "redditmovies"):
         results = redditmovies().search(query)
-    if(provider == "redditdocus"):
+    elif(provider == "redditdocus"):
         results = redditdocus().search(query)
-    if(provider == "watchseries"):
-        results = watchseries().search(query)
-    if(provider == "yts"):
-        results = yts().search(query)
-    if(provider == "thepiratebay"):
-        results = tpb().search(query)
-    if(provider == "limetorrents"):
-        results = lime.search(query)
-    if(provider == "cpabsien"):
-        results = cpabsien().search(query)
-    if(provider == "t411"):
-        results = t411().search(query)
-    if(provider == "strike"):
-        results = strike().search(query)
-    if(provider == "nyaa"):
-        results = nyaa().search(query)
-    if(provider == "eztv"):
-        results = eztv().search(query)
-    filtered_results = [x for x in sort_results(
-        results, sort) if x.seeds >= seeds] if sort in sorts else [x for x in results if x.seeds >= seeds]
+    elif(provider == "yts"):
+        results = YTS(YTS_URL).search(query)
+    elif(provider == "thepiratebay"):
+        results = TPB(TPB_URL).search(query)
+    elif(provider == "cpabsien"):
+        results = Cpabsien(CPABSIEN_URL).search(query)
+    elif(provider == "t411"):
+        results = T411().search(query)
+    elif(provider == "strike"):
+        results = Strike().search(query)
+    elif(provider == "nyaa"):
+        results = Nyaa(NYAA_URL).search(query)
+    elif(provider == "eztv"):
+        results = Eztv(EZTV_URL).search(query)
+    sorted_results=sort_results(results,sort) if sort in sorts else results
+    filtered_results = filter(lambda x:x.seeds>=seeds, sorted_results)
     final_results = filtered_results[:max]
     return final_results
 

@@ -3,7 +3,7 @@ from models import Torrent
 from utils import utils
 from provider import BaseProvider
 
-class strike(BaseProvider):
+class Strike(BaseProvider):
 
 	def __init__(self):
 		base_url=""

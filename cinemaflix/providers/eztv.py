@@ -1,14 +1,15 @@
 import requests
-from models import Torrent
 import re
 import json
 from provider import BaseProvider
+from models import Torrent
 
-class eztv(BaseProvider):
+class Eztv(BaseProvider):
     
-    def __init__(self):
+    def __init__(self,base_url):
+        super(Eztv,self).__init__(base_url)
         self.shows=[]
-        self.base_url="http://eztvapi.re/"
+
     def _get_shows(self):
         shows_url=self.base_url+"shows/"
         data=requests.get(shows_url).json()
@@ -18,6 +19,7 @@ class eztv(BaseProvider):
             for show in data:
                 shows.append({'id':show['imdb_id'], 'title':show['title']})
         return shows
+
     def _search_show(self,query):
         with open("providers/cache.json","r") as f:
             shows=json.load(f)
@@ -41,6 +43,7 @@ class eztv(BaseProvider):
             episodes.append({'num':episode['episode'],'season':episode['season'],'title':episode['title'], 'torrent_url':episode['torrents']["0"]['url'],'seeds':episode['torrents']["0"]['seeds']})
         episodes=sorted(episodes,key=lambda k: (k['season'],k['num']))
         return episodes
+
     def _search_episode(self,showname,s,e,episodes):
         t=Torrent()
         torrents=[]
@@ -51,6 +54,7 @@ class eztv(BaseProvider):
                 t.seeds=episode['seeds']
                 torrents.append(t)
         return torrents
+
     def _query(self,showname,season,episode):
         show=self.search_show(showname)[0]
         season=int(season)
@@ -58,6 +62,7 @@ class eztv(BaseProvider):
         all_episodes=self._get_episodes(show['id'])
         torrents=self._search_episode(show['title'],season,episode,all_episodes)
         return torrents
+        
     def search(self,query):
         results=[]
         x=re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")

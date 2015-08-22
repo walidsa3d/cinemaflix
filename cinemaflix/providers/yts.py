@@ -2,14 +2,15 @@ import requests
 from models import Torrent
 from provider import BaseProvider
 
-class yts(BaseProvider):
+class YTS(BaseProvider):
 
-    def __init__(self):
-        self.base_url="http://yts.to"
+    def __init__(self,base_url):
+        super(YTS,self).__init__(base_url)
 
     def search(self,query):
-        search_url = self.base_url + '/api/v2/list_movies.json?query_term=' +query+ '&sort=seeds&order=desc&set=1'
-        response=requests.get(search_url).json()
+        payload={'query_term':query,'sort':'seeds','order':'desc','set':'1'}
+        search_url = self.base_url + '/api/v2/list_movies.json'
+        response=requests.get(search_url,params=payload,headers=self.headers).json()
         torrents=[]
         for movie in response['data']['movies']:
             for torrent in movie['torrents']:

@@ -1,16 +1,16 @@
-#Palmyra
-A cli application for searching movies and series on torrent sites and streaming them.
+# Cinemaflix
+A cli application for searching movies and series online and streaming them.
 
-##Providers
+## Supported Providers
 - Kickasstorrents
 - Strike
 - The Pirate Bay
 - Yify
-- Limetorrents
 - Nyaa.se
 - Eztv
+- Reddit
+- Cpabsien
+- T411
 
-##TODO
-* Add option to download torrents
 
 

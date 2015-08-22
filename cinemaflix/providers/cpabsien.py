@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup as bs
 from models import Torrent
 from provider import BaseProvider
 
-class cpabsien(BaseProvider):
+class Cpabsien(BaseProvider):
 
-	def __init__(self):
-		self.base_url="http://www.cpasbien.pw/recherche/films/"
+	def __init__(self,base_url):
+	     super(Cpabsien,self).__init__(base_url)
+
 
 	def search(self,query):
 		search_url=self.base_url+query+".html,trie-seeds-d"

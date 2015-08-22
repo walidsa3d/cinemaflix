@@ -9,7 +9,7 @@ USER_FILE = 'user.json'
 class T411Exception(BaseException):
     pass
 
-class t411(BaseProvider):
+class T411(BaseProvider):
 
     def __init__(self, username = None, password = None) :
         """ Get user credentials and authentificate it, if any credentials

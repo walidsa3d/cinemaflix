@@ -56,9 +56,7 @@ class utils(object):
 
     @staticmethod
     def playvid(link):
-        print link
         command = "youstream {} --mpv".format(link)
-        print command
         subprocess.Popen(command, shell=True)
 
     @staticmethod
@@ -66,6 +64,8 @@ class utils(object):
         url = "http://www.youtube.com/oembed?url={}&format=json".format(
             youtube_link)
         response = requests.head(url)
-        if response.status_code == 404:
-            return False
-        return True
+        return response.status_code != 404
+
+    @staticmethod
+    def parse_magnet(magnet_link):
+        pass

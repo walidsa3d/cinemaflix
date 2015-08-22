@@ -4,16 +4,16 @@ from models import Torrent
 from guessit import guess_movie_info
 from provider import BaseProvider
 
-class nyaa(BaseProvider):
-    def __init__(self):
-        base_url="http://www.nyaa.se/"
+class Nyaa(BaseProvider):
+    def __init__(self,base_url):
+        self.base_url=base_url
 
-    def search(query):
+    def search(self,query):
         search_url = self.base_url + "/?page=search&term=" + query + "&sort=2&cats=1_0&filter=0"
         torrents=[]
         response=requests.get(search_url).text
-        soup=bs(response)
-        table = soup.find('table', attrs={'class':'tlist'})
+        soup=bs(response,"lxml")
+        table = soup.find('table', class_='tlist')
         for tr in table.find_all('tr')[1:]:
             t=Torrent()
             cols = tr.findAll('td')

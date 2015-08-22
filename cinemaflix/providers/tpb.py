@@ -2,14 +2,15 @@ from __future__ import unicode_literals
 from bs4 import BeautifulSoup as bs
 from models import Torrent
 from guessit import guess_movie_info
+from provider import BaseProvider
 import re
 import requests
-from provider import BaseProvider
 
-class tpb(BaseProvider):
+class TPB(BaseProvider):
 
-    def __init__(self):
-        self.base_url="https://thepiratebay.la"
+    def __init__(self,base_url):
+        super(TPB,self).__init__(base_url)
+        
 
     def search(self,query):
         search_url = self.base_url + "/search/" + query + "/0/7/0"
