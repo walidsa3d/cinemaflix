@@ -7,6 +7,7 @@ import base64
 import requests
 import math
 import subprocess
+import difflib
 
 
 class utils(object):
@@ -26,8 +27,6 @@ class utils(object):
         hashcontents = bencode.bencode(metadata['info'])
         digest = hashlib.sha1(hashcontents).digest()
         b32hash = base64.b32encode(digest)
-        # params = {'xt': 'urn:btih:%s' % b32hash,'dn': metadata['info']['name'],'tr': metadata['announce']}
-        # paramstr = urllib.urlencode(params)
         magneturi = 'magnet:?xt=urn:btih:%s' % b32hash
         return magneturi
 
@@ -52,6 +51,7 @@ class utils(object):
     def play(link, player, path, subtitle=None):
         command = "peerflix '{}' --{} --subtitles '{}' -f {} -d".format(
             link, player, subtitle, path)
+        print command
         subprocess.Popen(command, shell=True)
 
     @staticmethod
@@ -69,3 +69,10 @@ class utils(object):
     @staticmethod
     def parse_magnet(magnet_link):
         pass
+
+    @staticmethod
+    def compare(movie, sub):
+        ratio = 0
+        seq = difflib.SequenceMatcher(None, movie, sub)
+        ratio = ratio + seq.ratio()
+        return ratio

@@ -10,6 +10,7 @@ from strike import Strike
 from eztv import Eztv
 from redditmovies import redditmovies
 from redditdocus import redditdocus
+from rarbg import Rarbg
 from operator import attrgetter
 from constants import *
 
@@ -18,6 +19,8 @@ def search(query, provider, sort=None, seeds=0, max=0):
     sorts = ['seeds', 'size']
     if(provider == "kickass"):
         results = Kickass(KICKASS_URL).search(query)
+    if(provider == "rarbg"):
+        results = Rarbg(RARBG_URL).search(query)
     elif(provider == "redditmovies"):
         results = redditmovies().search(query)
     elif(provider == "redditdocus"):

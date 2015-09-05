@@ -8,7 +8,7 @@ from configobj import ConfigObj
 import os
 
 
-class TSearch:
+class TSearch(object):
 
     def display_results(self, torrent_list):
         for index, torrent in enumerate(torrent_list):
@@ -29,31 +29,15 @@ class TSearch:
         category = inquirer.prompt(subs)['category'].lower()
         return category
 
-    def movies_menu(self):
-        sites = ['Yts', 'Kickass', 'ThePirateBay',
-                 "T411", 'Cpabsien', 'Strike', 'RedditMovies',"RedditDocus"]
-        subs = [
-            inquirer.List('site',
-                          message="Choose a Provider",
-                          choices=sites,
-                          ),
-        ]
-        site = inquirer.prompt(subs)['site'].lower()
-        return site
-
-    def series_menu(self):
-        sites = ['EZTV']
-        subs = [
-            inquirer.List('site',
-                          message="Choose a Provider",
-                          choices=sites,
-                          ),
-        ]
-        site = inquirer.prompt(subs)['site'].lower()
-        return site
-
-    def anime_menu(self):
-        sites = ['Nyaa']
+    def category_menu(self,category):
+        movie_sites = ['Yts', 'Kickass', 'ThePirateBay','Rarbg',
+                 "T411", 'Cpabsien', 'Strike']
+        series_sites= ['EZTV']
+        anime_sites = ['Nyaa']
+        sites={'movies':movie_sites,
+                'series':series_sites,
+                'anime':anime_sites
+              }.get(category,None)
         subs = [
             inquirer.List('site',
                           message="Choose a Provider",
@@ -70,12 +54,7 @@ class TSearch:
         max_results = int(config['max_results'])
         cache_path = config['cache_path']
         category = self.categories_menu()
-        if category == "movies":
-            site = self.movies_menu()
-        if category == "series":
-            site = self.series_menu()
-        if category == "anime":
-            site = self.anime_menu()
+        site = self.category_menu(category)
         query = raw_input("Search: ")
         while(query == ""):
             query = raw_input("Search: ")
