@@ -3,49 +3,33 @@ import requests
 from models import Torrent
 from provider import BaseProvider
 
-HTTP_OK = 200
-USER_FILE = 'user.json'
-
-class T411Exception(BaseException):
-    pass
-
 class T411(BaseProvider):
-
-    def __init__(self, username = None, password = None) :
-        """ Get user credentials and authentificate it, if any credentials
-        defined use token stored in user file
-        """
-        self.base_url='https://api.t411.me/%s'
-        with open(USER_FILE) as user_file:
-                self.login = json.loads(user_file.read())
-                print self.login
-                if 'user' not in self.login or 'pass' not in \
-                        self.login:
-                    raise T411Exception('Wrong data found in user file')
-        user = self.login['user']
-        password =self.login['pass']
+    def __init__(self,base_url, username = None, password = None) :
+        super(T411, self).__init__(base_url)
+        self.base_url=base_url
+        with open(USER_FILE) as f:
+                self.login = json.load(f)
+                if any('user','pass') not in self.login:
+                    raise Exception('Wrong data found in user file')
+        user,password = self.login['user'],self.login['pass']
         self.auth(user, password)
 
     def auth(self, username, password) :
         """ Authentificate user and store token """
         self.user_token = self._api_call('auth', params={'username': username, 'password': password})
         if 'error' in self.user_token:
-            raise T411Exception('Error while fetching authentication token: %s'\
+            raise Exception('Error while fetching authentication token: %s'\
                     % self.user_token['error'])
         return True
 
     def _api_call(self, method = '', params = None) :
         """ Call T411 API """
-        url=API_URL % method
-        headers={}
+        url=self.base_url
         if method != 'auth' :
-            headers['Authorization']=self.user_token['token']
-        req = requests.post(url,data=params,headers=headers)
-        if req.status_code == requests.codes.OK:
-            return req.json()
-        else :
-            raise T411Exception('Error while sending %s request: HTTP %s' % \
-                    (method, req.status_code))
+            self.headers['Authorization']=self.user_token['token']
+        req = requests.post(url,data=params,headers=self.headers).json()
+        return req
+
     def search(self,query):
         data=self._api_call('/torrents/search/%s?&limit=40' %query)
         torrents=[]

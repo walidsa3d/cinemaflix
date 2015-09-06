@@ -1,11 +1,11 @@
 import sys
 import inquirer
-from termcolor import colored
+import os
 import providers.searchapi as api
-from utils.utils import utils
+from termcolor import colored
+from utils import utils
 from utils.subtitles import opensubtitles as opensubs
 from configobj import ConfigObj
-import os
 
 
 class TSearch(object):

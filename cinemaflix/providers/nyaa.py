@@ -6,12 +6,13 @@ from provider import BaseProvider
 
 class Nyaa(BaseProvider):
     def __init__(self,base_url):
-        self.base_url=base_url
+        super(Nyaa,self).__init__(base_url)
 
     def search(self,query):
-        search_url = self.base_url + "/?page=search&term=" + query + "&sort=2&cats=1_0&filter=0"
+        search_url = self.base_url
+        payload={'page':'search','term':query,'sort':'2','cats':'1_0','filter':'0'}
         torrents=[]
-        response=requests.get(search_url).text
+        response=requests.get(search_url,params=payload,headers=self.headers).text
         soup=bs(response,"lxml")
         table = soup.find('table', class_='tlist')
         for tr in table.find_all('tr')[1:]:
@@ -22,6 +23,5 @@ class Nyaa(BaseProvider):
             t.size=cols[3].text
             t.seeds=cols[4].text
             t.torrent_url=cols[2].find('a').get('href')+"&magnet=1"
-            t.quality=g['screenSize'] if 'screenSize' in g else "Undefined"
             torrents.append(t)
         return torrents

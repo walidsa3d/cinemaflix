@@ -65,12 +65,12 @@ class Eztv(BaseProvider):
         
     def search(self,query):
         results=[]
-        x=re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
-        m=x.match(query)
-        if m:
-            show=m.group(1)
-            season=m.group(3).strip().split(' ')[0]
-            episode=m.group(3).strip().split(' ')[1]
+        epregex=re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
+        match=epregex.match(query)
+        if match:
+            show=match.group(1)
+            season=match.group(3).strip().split(' ')[0]
+            episode=match.group(3).strip().split(' ')[1]
             results=self._query(show,season,episode)
         return results
 

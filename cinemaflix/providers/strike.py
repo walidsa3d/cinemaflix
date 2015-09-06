@@ -5,12 +5,13 @@ from provider import BaseProvider
 
 class Strike(BaseProvider):
 
-	def __init__(self):
-		base_url=""
+	def __init__(self,base_url):
+		super(Strike, self).__init__(base_url)
 	
 	def search(self,query):
-		search_url="https://getstrike.net/api/v2/torrents/search/?phrase=%s&category=Movies" %query
-		data=requests.get(search_url).json()
+		search_url="https://getstrike.net/api/v2/torrents/search/"
+		payload={'phrase':query,'category':'Movies'}
+		data=requests.get(search_url,params=payload,headers=self.headers).json()
 		torrents=[]
 		for result in data["torrents"]:
 			t=Torrent()
