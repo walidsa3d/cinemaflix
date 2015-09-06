@@ -1,7 +1,7 @@
 import requests
 from models import Torrent
 from guessit import guess_movie_info
-from utils import utils
+from cinemaflix.utils.utils import utils
 from provider import BaseProvider
 
 class Kickass(BaseProvider):

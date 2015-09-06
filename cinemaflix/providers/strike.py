@@ -1,6 +1,6 @@
 import requests
 from models import Torrent
-from utils import utils
+from cinemaflix.utils.utils import utils
 from provider import BaseProvider
 
 class Strike(BaseProvider):

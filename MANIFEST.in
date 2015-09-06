@@ -1,0 +1,2 @@
+include cinemaflix/config.ini
+include cinemaflix/providers/cache.json

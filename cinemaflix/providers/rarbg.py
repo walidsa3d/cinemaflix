@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 from models import Torrent
 from provider import BaseProvider
-from utils import utils
+from cinemaflix.utils.utils import utils
 
 
 class Rarbg(BaseProvider):

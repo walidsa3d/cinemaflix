@@ -1,5 +1,3 @@
-
-
 class BaseProvider(object):
 	"""A base class for search providers"""	
 

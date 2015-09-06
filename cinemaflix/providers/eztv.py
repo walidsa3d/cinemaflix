@@ -3,13 +3,14 @@ import re
 import json
 from provider import BaseProvider
 from models import Torrent
+import os
 
 class Eztv(BaseProvider):
     
     def __init__(self,base_url):
         super(Eztv,self).__init__(base_url)
         self.shows=[]
-
+        self.shows_cache_path=os.path.join(os.path.dirname(__file__),'cache.json')
     def _get_shows(self):
         shows_url=self.base_url+"shows/"
         data=requests.get(shows_url).json()
@@ -21,7 +22,7 @@ class Eztv(BaseProvider):
         return shows
 
     def _search_show(self,query):
-        with open("providers/cache.json","r") as f:
+        with open(self.shows_cache_path,"r") as f:
             shows=json.load(f)
         results=[]
         for show in shows:
@@ -32,7 +33,7 @@ class Eztv(BaseProvider):
 
     def _cache_shows(self):
         shows=self.get_shows()
-        with open("cache.json",'w') as f:
+        with open(self.shows_cache_path,'w') as f:
             f.write(json.dumps(shows))
 
     def _get_episodes(self,show_id):
@@ -56,7 +57,7 @@ class Eztv(BaseProvider):
         return torrents
 
     def _query(self,showname,season,episode):
-        show=self.search_show(showname)[0]
+        show=self._search_show(showname)[0]
         season=int(season)
         episode=int(episode)
         all_episodes=self._get_episodes(show['id'])

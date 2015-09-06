@@ -3,7 +3,7 @@ import inquirer
 import os
 import providers.searchapi as api
 from termcolor import colored
-from utils import utils
+from cinemaflix.utils.utils import utils
 from utils.subtitles import opensubtitles as opensubs
 from configobj import ConfigObj
 
@@ -48,7 +48,8 @@ class TSearch(object):
         return site
 
     def main(self):
-        config = ConfigObj("config.ini")
+        configfile=os.path.join(os.path.dirname(__file__),'config.ini')
+        config = ConfigObj(configfile)
         player = config['player']
         min_seeds = int(config['min_seeds'])
         max_results = int(config['max_results'])
