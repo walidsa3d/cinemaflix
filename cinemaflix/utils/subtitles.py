@@ -1,14 +1,10 @@
-import os
-import struct
-import xmlrpclib
-import commands
 import gzip
-import traceback
 import logging
+import os
 import requests
 import shutil
-import difflib
-import os
+import xmlrpclib
+
 from utils import utils
 
 

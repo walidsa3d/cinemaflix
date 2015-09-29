@@ -32,7 +32,7 @@ class TSearch(object):
 
     def category_menu(self, category):
         movie_sites = ['Yts', 'Kickass', 'ThePirateBay', 'Rarbg',
-                       "T411", 'Cpabsien', 'Strike']
+                       "T411", 'Cpasbien', 'Strike']
         series_sites = ['EZTV']
         anime_sites = ['Nyaa']
         sites = {'movies': movie_sites,

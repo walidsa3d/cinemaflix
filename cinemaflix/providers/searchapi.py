@@ -1,6 +1,6 @@
 
 from constants import *
-from cpabsien import Cpabsien
+from cpasbien import Cpasbien
 from eztv import Eztv
 from kickass import Kickass
 from nyaa import Nyaa
@@ -16,7 +16,7 @@ providers = {
     "rarbg": Rarbg(RARBG_URL),
     "yts": YTS(YTS_URL),
     "thepiratebay": TPB(TPB_URL),
-    "cpabsien": Cpabsien(CPABSIEN_URL),
+    "cpasbien": Cpasbien(CPABSIEN_URL),
     "strike": Strike(STRIKE_URL),
     "nyaa": Nyaa(NYAA_URL),
     "eztv": Eztv(EZTV_URL)

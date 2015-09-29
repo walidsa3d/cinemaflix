@@ -81,3 +81,6 @@ class Eztv(BaseProvider):
             episode = match.group(3).strip().split(' ')[1]
             results = self._query(show, season, episode)
         return results
+
+    def get_top(self):
+        return []
