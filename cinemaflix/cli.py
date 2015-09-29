@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-#walid.saad
+
+import os
+import sys
 
 from main import TSearch
-import sys
-import os
+
 
 def cli():
     TSearch().main()

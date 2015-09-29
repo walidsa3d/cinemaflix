@@ -10,7 +10,7 @@ class Torrent(object):
         return self.title == other.title
 
     def __repr__(self):
-        return '(%s, %s)' % (repr(self.torrent_url), repr(self.title))
+        return '(%s, %s,%s,%s)' % (self.torrent_url, self.title, repr(self.seeds), self.size)
 
     def __str__(self):
         return self.title

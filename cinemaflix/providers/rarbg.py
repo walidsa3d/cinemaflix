@@ -1,8 +1,9 @@
 import requests
+
 from bs4 import BeautifulSoup as bs
+from cinemaflix.utils.utils import utils
 from models import Torrent
 from provider import BaseProvider
-from cinemaflix.utils.utils import utils
 
 
 class Rarbg(BaseProvider):
@@ -14,8 +15,9 @@ class Rarbg(BaseProvider):
         payload = {'category': '14;48;17;44;45;47;42;46',
                    'search': query, 'order': 'seeder', 'by': 'DESC'}
         search_url = self.base_url + '/torrents.php'
-        cookies={'7fAY799j': 'VtdTzG69'}
-        response = requests.get(search_url, headers=self.headers, params=payload, cookies=cookies).text
+        cookies = {'7fAY799j': 'VtdTzG69'}
+        response = requests.get(
+            search_url, headers=self.headers, params=payload, cookies=cookies).text
         soup = bs(response, "lxml")
         tabl = soup.find('table', attrs={'class': 'lista2t'})
         torrents = []

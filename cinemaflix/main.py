@@ -1,11 +1,12 @@
-import sys
 import inquirer
 import os
 import providers.searchapi as api
-from termcolor import colored
+import sys
+
 from cinemaflix.utils.utils import utils
-from utils.subtitles import opensubtitles as opensubs
 from configobj import ConfigObj
+from termcolor import colored
+from utils.subtitles import opensubtitles as opensubs
 
 
 class TSearch(object):
@@ -29,15 +30,15 @@ class TSearch(object):
         category = inquirer.prompt(subs)['category'].lower()
         return category
 
-    def category_menu(self,category):
-        movie_sites = ['Yts', 'Kickass', 'ThePirateBay','Rarbg',
-                 "T411", 'Cpabsien', 'Strike']
-        series_sites= ['EZTV']
+    def category_menu(self, category):
+        movie_sites = ['Yts', 'Kickass', 'ThePirateBay', 'Rarbg',
+                       "T411", 'Cpabsien', 'Strike']
+        series_sites = ['EZTV']
         anime_sites = ['Nyaa']
-        sites={'movies':movie_sites,
-                'series':series_sites,
-                'anime':anime_sites
-              }.get(category,None)
+        sites = {'movies': movie_sites,
+                 'series': series_sites,
+                 'anime': anime_sites
+                 }.get(category, None)
         subs = [
             inquirer.List('site',
                           message="Choose a Provider",
@@ -48,7 +49,7 @@ class TSearch(object):
         return site
 
     def main(self):
-        configfile=os.path.join(os.path.dirname(__file__),'config.ini')
+        configfile = os.path.join(os.path.dirname(__file__), 'config.ini')
         config = ConfigObj(configfile)
         player = config['player']
         min_seeds = int(config['min_seeds'])
@@ -57,10 +58,11 @@ class TSearch(object):
         category = self.categories_menu()
         site = self.category_menu(category)
         query = raw_input("Search: ")
-        while(query == ""):
-            query = raw_input("Search: ")
-        search_results = api.search(
-            query, site, sort='seeds', seeds=min_seeds, max=max_results)
+        if query == "":
+            search_results = api.get_top(site)
+        else:
+            search_results = api.search(
+                query, site, sort='seeds', seeds=min_seeds, max=max_results)
         self.display_results(search_results)
         user_input = raw_input("Pick Movie, [e]xit, [b]ack :\t")
         search_results = dict(enumerate(search_results))
@@ -80,13 +82,11 @@ class TSearch(object):
             print "Subtitles found!\nDownloading.."
             subtitle_file = opensubs().download_subtitle(subtitle, cache_path)
             print "Streaming " + movie
-            #utils().playvid(movie_url)
             utils.play(movie_url, player, cache_path, subtitle=subtitle_file)
         else:
             print "No subtitles found"
             print "Streaming " + movie
-            # utils.play(movie_url, player, cache_path)
-            utils().playvid(movie_url)
+            utils.play(movie_url, player, cache_path)
 
 if __name__ == '__main__':
     TSearch().main()

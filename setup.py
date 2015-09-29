@@ -9,7 +9,7 @@ setup(
     author='Walid Saad',
     author_email='walid.sa3d@gmail.com',
     url='https://github.com/walidsa3d/cinemaflix',
-    license="GPL",
+    license="MIT",
     keywords="cli torrent movies",
     packages=find_packages(),
     include_package_data=True,

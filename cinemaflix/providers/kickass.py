@@ -1,26 +1,43 @@
 import requests
-from models import Torrent
-from guessit import guess_movie_info
+
+from bs4 import BeautifulSoup as bs
 from cinemaflix.utils.utils import utils
+from models import Torrent
 from provider import BaseProvider
+
 
 class Kickass(BaseProvider):
 
-    def __init__(self,base_url):
-        super(Kickass,self).__init__(base_url)
+    def __init__(self, base_url):
+        super(Kickass, self).__init__(base_url)
 
-    def search(self,query):
-        payload={'q':query,'field':'seeder','order':'desc','page':'1'}
+    def search(self, query):
+        payload = {'q': query, 'field': 'seeder', 'order': 'desc', 'page': '1'}
         search_url = self.base_url + '/json.php'
-        data=requests.get(search_url,params=payload,headers=self.headers).json()
-        torrents=[]
+        data = requests.get(
+            search_url, params=payload, headers=self.headers).json()
+        torrents = []
         for movie in data['list']:
-            t=Torrent()
-            g=guess_movie_info(movie['title'],info=['filename'])
-            t.title=movie['title']
-            t.seeds=int(movie['seeds'])
-            t.size=utils.hsize(movie['size'])
-            t.torrent_url=movie['torrentLink']
+            t = Torrent()
+            t.title = movie['title']
+            t.seeds = int(movie['seeds'])
+            t.size = utils.hsize(movie['size'])
+            t.torrent_url = movie['torrentLink']
             torrents.append(t)
         return torrents
 
+    def get_top(self):
+        search_url = self.base_url + '/movies'
+        data = requests.get(search_url, headers=self.headers).text
+        soup = bs(data, "lxml")
+        torrents = []
+        table = soup.find(class_="data")
+        for row in table.find_all('tr')[1:]:
+            cells = row.find_all('td')
+            t = Torrent()
+            t.title = cells[0].find(class_="cellMainLink").text
+            t.torrent_url = cells[0].find_all("a")[3].get('href')
+            t.size = cells[1].text
+            t.seeds = int(cells[4].text)
+            torrents.append(t)
+        return torrents
