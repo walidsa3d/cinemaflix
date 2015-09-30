@@ -48,7 +48,15 @@ class TSearch(object):
         site = inquirer.prompt(subs)['site'].lower()
         return site
 
+    def is_installed(self, cmd):
+        inst = lambda x: any(os.access(os.path.join(path, x), os.X_OK) for path
+                             in os.environ["PATH"].split(os.pathsep))
+        return inst(cmd)
+
     def main(self):
+        if not self.is_installed('peerflix'):
+            print "Peerflix not installed. Please install it"
+            sys.exit(0)
         configfile = os.path.join(os.path.dirname(__file__), 'config.ini')
         config = ConfigObj(configfile)
         player = config['player']
