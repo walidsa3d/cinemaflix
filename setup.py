@@ -1,9 +1,10 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 
 setup(
     name='cinemaflix',
-    version='0.9',
+    version='1.0.0',
     description="A command line tool  to find and play movies online",
     long_description=open('README.md').read(),
     author='Walid Saad',
