@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='cinemaflix',
-    version='1.1.0',
+    version='1.2.0',
     description="A command line tool  to find and play movies online",
     long_description=open('README.md').read(),
     author='Walid Saad',
