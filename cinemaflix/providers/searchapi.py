@@ -7,7 +7,6 @@ from nyaa import Nyaa
 from operator import attrgetter
 from rarbg import Rarbg
 from strike import Strike
-from t411 import T411
 from tpb import TPB
 from yts import YTS
 

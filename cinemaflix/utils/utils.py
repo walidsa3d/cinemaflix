@@ -1,14 +1,14 @@
-# walid.saad
 
 from __future__ import division
-import bencode
-import hashlib
-import base64
-import requests
-import math
-import subprocess
-import difflib
 
+import base64
+import bencode
+import difflib
+import hashlib
+import math
+import os
+import requests
+import subprocess
 
 class utils(object):
 
@@ -76,3 +76,8 @@ class utils(object):
         seq = difflib.SequenceMatcher(None, movie, sub)
         ratio = ratio + seq.ratio()
         return ratio
+    @staticmethod
+    def is_installed(cmd):
+        inst = lambda x: any(os.access(os.path.join(path, x), os.X_OK) for path
+                             in os.environ["PATH"].split(os.pathsep))
+        return inst(cmd)
