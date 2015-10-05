@@ -7,7 +7,6 @@ import difflib
 import hashlib
 import math
 import requests
-import subprocess
 
 
 class utils(object):

@@ -6,11 +6,11 @@ import sys
 from cinemaflix.utils.utils import utils
 from utils.handler import TorrentHandler
 
-import logging
 
 from configobj import ConfigObj
 from termcolor import colored
 from utils.subtitles import opensubtitles as opensubs
+
 
 class TSearch(object):
 
@@ -86,7 +86,8 @@ class TSearch(object):
             print "Subtitles found!\nDownloading.."
             subtitle_file = opensubs().download_subtitle(subtitle, cache_path)
             print "Streaming " + movie
-            handler.stream("peerflix", movie_url, player, subtitle=subtitle_file)
+            handler.stream(
+                "peerflix", movie_url, player, subtitle=subtitle_file)
         else:
             print "No subtitles found"
             print "Streaming " + movie
