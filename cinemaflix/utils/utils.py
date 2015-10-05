@@ -6,9 +6,9 @@ import bencode
 import difflib
 import hashlib
 import math
-import os
 import requests
 import subprocess
+
 
 class utils(object):
 
@@ -18,10 +18,9 @@ class utils(object):
     @staticmethod
     def to_magnet(torrent_link):
         """converts a torrent file to a magnet link"""
-        response = requests.get(torrent_link, stream=True)
+        response = requests.get(torrent_link)
         with open('tempfile.torrent', 'w') as out_file:
             out_file.write(response.content)
-            out_file.close()
         torrent = open('tempfile.torrent', 'r').read()
         metadata = bencode.bdecode(torrent)
         hashcontents = bencode.bencode(metadata['info'])
@@ -48,25 +47,6 @@ class utils(object):
         pass
 
     @staticmethod
-    def play(link, player, path, subtitle=None):
-        command = "peerflix '{}' --{} --subtitles '{}' -f {} -d".format(
-            link, player, subtitle, path)
-        print command
-        subprocess.Popen(command, shell=True)
-
-    @staticmethod
-    def playvid(link):
-        command = "youstream {} --mpv".format(link)
-        subprocess.Popen(command, shell=True)
-
-    @staticmethod
-    def check_yt(youtube_link):
-        url = "http://www.youtube.com/oembed?url={}&format=json".format(
-            youtube_link)
-        response = requests.head(url)
-        return response.status_code != 404
-
-    @staticmethod
     def parse_magnet(magnet_link):
         pass
 
@@ -76,8 +56,3 @@ class utils(object):
         seq = difflib.SequenceMatcher(None, movie, sub)
         ratio = ratio + seq.ratio()
         return ratio
-    @staticmethod
-    def is_installed(cmd):
-        inst = lambda x: any(os.access(os.path.join(path, x), os.X_OK) for path
-                             in os.environ["PATH"].split(os.pathsep))
-        return inst(cmd)

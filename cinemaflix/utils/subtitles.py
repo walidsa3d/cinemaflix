@@ -64,11 +64,8 @@ class opensubtitles:
             search['imdbid'] = imdbID
         if bytesize:
             search['moviebytesize'] = str(bytesize)
-        # search['SubLanguageID']="eng,fra,dan"
-        # if langs: search['sublanguageid'] = ",".join([self.getLanguage(lang) for lang in langs])
         if len(search) == 0:
             log.debug("No search term, we'll use the filename")
-            # Let's try to guess what to search:
             search['query'] = filename
             log.debug(search['query'])
 
@@ -81,10 +78,7 @@ class opensubtitles:
         sublinks = []
         if results['data']:
             log.debug(results['data'])
-            # OpenSubtitles hash function is not robust ... We'll use the
-            # MovieReleaseName to help us select the best candidate
             for r in results['data']:
-                # Only added if the MovieReleaseName matches the file
                 result = {}
                 result["release"] = r['SubFileName']
                 result["link"] = r['SubDownloadLink']
