@@ -19,7 +19,7 @@ setup(
         'Development Status :: 4  - Beta',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Natural Language :: English',
         'Operating System :: OS Independent',
