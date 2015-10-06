@@ -13,25 +13,22 @@ class Strike(BaseProvider):
     def search(self, query):
         search_url = "https://getstrike.net/api/v2/torrents/search/"
         payload = {'phrase': query, 'category': 'Movies'}
-        data = requests.get(
+        response = requests.get(
             search_url, params=payload, headers=self.headers).json()
-        torrents = []
-        for result in data["torrents"]:
-            t = Torrent()
-            t.title = result['torrent_title']
-            t.seeds = result['seeds']
-            t.size = utils.hsize(result['size'])
-            t.torrent_url = result['magnet_uri']
-            torrents.append(t)
+        torrents = self._parse_page(response)
         return torrents
 
     def get_top(self):
         search_url = "https://getstrike.net/api/v2/torrents/search/"
-        payload = {'phrase': "-zzzzzzz", 'category': 'Movies'}
-        data = requests.get(
+        payload = {'phrase': "-zzzzz", 'category': 'Movies'}
+        response = requests.get(
             search_url, params=payload, headers=self.headers).json()
+        torrents = self._parse_page(response)
+        return torrents
+
+    def _parse_page(self, page_text):
         torrents = []
-        for result in data["torrents"]:
+        for result in page_text['torrents']:
             t = Torrent()
             t.title = result['torrent_title']
             t.seeds = result['seeds']

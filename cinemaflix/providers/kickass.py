@@ -1,6 +1,6 @@
 import requests
 
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup as BS
 from cinemaflix.utils.utils import utils
 from models import Torrent
 from provider import BaseProvider
@@ -29,7 +29,7 @@ class Kickass(BaseProvider):
     def get_top(self):
         search_url = self.base_url + '/movies'
         data = requests.get(search_url, headers=self.headers).text
-        soup = bs(data, "lxml")
+        soup = BS(data, "lxml")
         torrents = []
         table = soup.find(class_="data")
         for row in table.find_all('tr')[1:]:

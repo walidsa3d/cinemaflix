@@ -4,6 +4,9 @@ import providers.searchapi as api
 import sys
 
 from cinemaflix.utils.utils import utils
+from utils.handler import TorrentHandler
+
+
 from configobj import ConfigObj
 from termcolor import colored
 from utils.subtitles import opensubtitles as opensubs
@@ -49,9 +52,6 @@ class TSearch(object):
         return site
 
     def main(self):
-        if not utils.is_installed('peerflix'):
-            print "Peerflix not installed. Please install it"
-            sys.exit(0)
         configfile = os.path.join(os.path.dirname(__file__), 'config.ini')
         config = ConfigObj(configfile)
         player = config['player']
@@ -81,15 +81,17 @@ class TSearch(object):
         movie = search_results[int(user_input)].title
         movie_url = search_results[int(user_input)].torrent_url
         subtitle = opensubs().best_subtitle(movie, ["eng"])
+        handler = TorrentHandler(cache_path)
         if subtitle is not None:
             print "Subtitles found!\nDownloading.."
             subtitle_file = opensubs().download_subtitle(subtitle, cache_path)
             print "Streaming " + movie
-            utils.play(movie_url, player, cache_path, subtitle=subtitle_file)
+            handler.stream(
+                "peerflix", movie_url, player, subtitle=subtitle_file)
         else:
             print "No subtitles found"
             print "Streaming " + movie
-            utils.play(movie_url, player, cache_path)
+            handler.stream_with_peerflix("peerflix", movie_url, player)
 
 if __name__ == '__main__':
     TSearch().main()

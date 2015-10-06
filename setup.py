@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='cinemaflix',
-    version='1.2.0',
+    version='1.4.0',
     description="A command line tool  to find and play movies online",
     long_description=open('README.md').read(),
     author='Walid Saad',
@@ -19,7 +19,7 @@ setup(
         'Development Status :: 4  - Beta',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Natural Language :: English',
         'Operating System :: OS Independent',
