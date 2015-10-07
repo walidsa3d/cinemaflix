@@ -16,7 +16,7 @@ setup(
     include_package_data=True,
     entry_points={"console_scripts": ["cinemaflix=cinemaflix.cli:cli"]},
     classifiers=[
-        'Development Status :: 4  - Beta',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
         'License :: OSI Approved :: MIT License',
