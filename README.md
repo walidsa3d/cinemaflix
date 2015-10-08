@@ -1,16 +1,17 @@
 # Cinemaflix
-A console application for searching and streaming movies and series.
+A console application for searching and streaming movies, anime and series.
 
-#Installation (automatic)
+#Install (automatic)
 ```
+$ pip install cinemaflix
 ```
-#Installation (manuel)
+#Install (manual)
 ```
 $ git clone git@github.com:walidsa3d/cinemaflix.git
 $ cd cinemaflix
 $ python setup.py install
 ```
-## Supported Providers
+## Supported Torrent Providers
 - Kickasstorrents
 - Strike
 - The Pirate Bay
