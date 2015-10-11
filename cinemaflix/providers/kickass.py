@@ -1,7 +1,8 @@
 import requests
 
+import torrentutils
+
 from bs4 import BeautifulSoup as BS
-from cinemaflix.utils.utils import utils
 from models import Torrent
 from provider import BaseProvider
 
@@ -21,7 +22,7 @@ class Kickass(BaseProvider):
             t = Torrent()
             t.title = movie['title']
             t.seeds = int(movie['seeds'])
-            t.size = utils.hsize(movie['size'])
+            t.size = torrentutils.hsize(movie['size'])
             t.torrent_url = movie['torrentLink']
             torrents.append(t)
         return torrents

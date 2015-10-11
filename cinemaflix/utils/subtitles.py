@@ -1,11 +1,10 @@
+import difflib
 import gzip
 import logging
 import os
 import requests
 import shutil
 import xmlrpclib
-
-from utils import utils
 
 
 OS_LANGS = {"en": "eng", "fr": "fre", "hu": "hun", "cs": "cze", "pl": "pol", "sk": "slo",
@@ -36,16 +35,24 @@ class opensubtitles:
         os.remove(srtbasefilename + ".srt.gz")
         return dldir + srtbasefilename + ".srt"
 
+    def compare(self, movie, sub):
+        ratio = 0
+        seq = difflib.SequenceMatcher(None, movie, sub)
+        ratio = ratio + seq.ratio()
+        return ratio
+
     def best_subtitle(self, filename, langs):
         subtitles = self.search_by_name(filename, langs)
-        best_match = subtitles[0]
-        maxi = 0
-        for subtitle in subtitles:
-            ratio = utils.compare(filename, subtitle['release'])
-            if ratio > maxi:
-                maxi = ratio
-                best_match = subtitle
-        return best_match if len(subtitles) > 0 else None
+        if subtitles:
+            best_match = subtitles[0]
+            maxi = 0
+            for subtitle in subtitles:
+                ratio = self.compare(filename, subtitle['release'])
+                if ratio > maxi:
+                    maxi = ratio
+                    best_match = subtitle
+            return best_match
+        return None
 
     def search_by_name(self, query, langs):
         results = self.query(query)

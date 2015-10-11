@@ -3,13 +3,12 @@ import os
 import providers.searchapi as api
 import sys
 
-from cinemaflix.utils.utils import utils
-from utils.handler import TorrentHandler
+from utils import TorrentHandler
 
 
 from configobj import ConfigObj
 from termcolor import colored
-from utils.subtitles import opensubtitles as opensubs
+from utils import opensubtitles as opensubs
 
 
 class TSearch(object):

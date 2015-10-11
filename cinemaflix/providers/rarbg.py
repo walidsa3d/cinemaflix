@@ -1,7 +1,7 @@
 import requests
 
+
 from bs4 import BeautifulSoup as BS
-from cinemaflix.utils.utils import utils
 from models import Torrent
 from provider import BaseProvider
 

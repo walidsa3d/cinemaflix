@@ -1,6 +1,7 @@
 import requests
 
-from cinemaflix.utils.utils import utils
+import torrentutils
+
 from models import Torrent
 from provider import BaseProvider
 
@@ -32,7 +33,7 @@ class Strike(BaseProvider):
             t = Torrent()
             t.title = result['torrent_title']
             t.seeds = result['seeds']
-            t.size = utils.hsize(result['size'])
+            t.size = torrentutils.hsize(result['size'])
             t.torrent_url = result['magnet_uri']
             torrents.append(t)
         return torrents[:50]
