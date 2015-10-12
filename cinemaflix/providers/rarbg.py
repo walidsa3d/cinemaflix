@@ -1,6 +1,10 @@
 import requests
 
 
+import base64
+import bencode
+import hashlib
+
 from bs4 import BeautifulSoup as BS
 from models import Torrent
 from provider import BaseProvider
@@ -35,13 +39,34 @@ class Rarbg(BaseProvider):
         torrents = []
         for tr in tabl.find_all('tr')[1:]:
             rows = tr.find_all('td')
-            t = Torrent()
-            t.title = rows[1].find('a').text
-            rarbg_id = rows[1].find('a')['href'].strip('/torrent/')
-            title = requests.utils.quote(t.title) + "-[rarbg.com].torrent"
-            t.torrent_url = self.base_url + "/download.php?id=%s&f=%s" % (
-                rarbg_id, title)
-            t.size = rows[4].text
-            t.seeds = rows[5].text
-            torrents.append(t)
+            try:
+                t = Torrent()
+                t.title = rows[1].find('a').text
+                rarbg_id = rows[1].find('a')['href'].strip('/torrent/')
+                title = requests.utils.quote(t.title) + "-[rarbg.com].torrent"
+                download_url = self.base_url + "/download.php?id=%s&f=%s" % (
+                    rarbg_id, title)
+                t.torrent_url = self.to_magnet(download_url)
+                t.size = rows[3].text
+                t.seeds = int(rows[4].text)
+                torrents.append(t)
+            except bencode.BTL.BTFailure:
+                pass
         return torrents
+
+    def to_magnet(self, torrent_link):
+        """converts a torrent file to a magnet link"""
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36', 'Referer': 'https://rarbg.to/torrent/'}
+        cookies = {'7fAY799j': 'VtdTzG69'}
+        response = requests.get(
+            torrent_link, headers=headers, timeout=20, allow_redirects=True, cookies=cookies, )
+        with open('/tmp/tempfile.torrent', 'w') as out_file:
+            out_file.write(response.content)
+        torrent = open('/tmp/tempfile.torrent', 'r').read()
+        metadata = bencode.bdecode(torrent)
+        hashcontents = bencode.bencode(metadata['info'])
+        digest = hashlib.sha1(hashcontents).digest()
+        b32hash = base64.b32encode(digest)
+        magneturi = 'magnet:?xt=urn:btih:%s' % b32hash
+        return magneturi

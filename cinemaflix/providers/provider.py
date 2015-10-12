@@ -1,3 +1,5 @@
+import requests
+
 class BaseProvider(object):
 
     """A base class for search providers"""
@@ -12,3 +14,4 @@ class BaseProvider(object):
 
     def get_top(self):
         pass
+
