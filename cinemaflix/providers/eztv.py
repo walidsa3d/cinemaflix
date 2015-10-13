@@ -50,12 +50,12 @@ class Eztv(BaseProvider):
         episodes = sorted(episodes, key=lambda k: (k['season'], k['num']))
         return episodes
 
-    def _search_episode(self, showname, s, e, episodes):
+    def _search_episode(self, show_title, s, e, episodes):
         t = Torrent()
         torrents = []
         for episode in episodes:
             if s == episode['season'] and episode['num'] == e:
-                t.title = showname+'.'+'S' + \
+                t.title = show_title+'.'+'S' + \
                     str(s)+'E'+str(e)+':'+episode['title']
                 t.torrent_url = episode['torrent_url']
                 t.seeds = episode['seeds']
@@ -80,6 +80,8 @@ class Eztv(BaseProvider):
             season = match.group(3).strip().split(' ')[0]
             episode = match.group(3).strip().split(' ')[1]
             results = self._query(show, season, episode)
+        else:
+            print 'Badly Formatted Query'
         return results
 
     def get_top(self):
