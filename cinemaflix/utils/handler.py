@@ -17,9 +17,10 @@ class TorrentHandler(object):
             raise ResourceNotFoundException('Player Not Found')
         if not self.is_installed('peerflix'):
             raise ResourceNotFoundException('Peerflix Not Found')
-        command = "peerflix '{}' --{} --subtitles '{}' -f {} -d".format(
-            link, player, subtitle, self.cache_path)
-        print command
+        command = "peerflix '{}' --{} -f {} -d".format(
+            link, player, self.cache_path)
+        if subtitle is not None:
+            command = command+"--subtitles '%s'" %subtitle
         subprocess.Popen(command, shell=True)
 
     def stream_with_webtorrent(self, link, player, subtitle=None):
@@ -27,9 +28,10 @@ class TorrentHandler(object):
             raise ResourceNotFoundException('Player Not Found')
         if not self.is_installed('peerflix'):
             raise ResourceNotFoundException('WebTorrent Not Found')
-        command = "webtorrent '{}' --{} --subtitles '{}' -o {}".format(
-            link, player, subtitle, self.cache_path)
-        print command
+        command = "webtorrent '{}' --{} -o {}".format(
+            link, player, self.cache_path)
+        if subtitle is not None:
+            command = command+"--subtitles '%s'" %subtitle
         subprocess.Popen(command)
 
     def stream(self, handler, link, player, subtitle=None):

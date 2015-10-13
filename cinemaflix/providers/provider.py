@@ -1,4 +1,3 @@
-import requests
 
 class BaseProvider(object):
 
@@ -14,4 +13,3 @@ class BaseProvider(object):
 
     def get_top(self):
         pass
-

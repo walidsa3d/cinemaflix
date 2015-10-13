@@ -9,8 +9,9 @@ from main import TSearch
 
 
 def cli():
-    parser = argparse.ArgumentParser(usage="-h for full usage")
-    parser.add_argument('-V', '--version', action='version', version=__version__)
+    parser = argparse.ArgumentParser(usage='-h for full usage')
+    parser.add_argument(
+        '-V', '--version', action='version', version=__version__)
     parser.parse_args()
     try:
         TSearch().main()
