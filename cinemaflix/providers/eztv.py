@@ -28,15 +28,16 @@ class Eztv(BaseProvider):
     def _search_show(self, query):
         with open(self.shows_cache_path, "r") as f:
             shows = json.load(f)
-        results = []
+        result = None
         for show in shows:
-            match = re.search(query.lower(), show['title'].lower())
+            match = query.lower() == show['title'].lower()
             if match:
-                results.append(show)
-        return results
+                result = show
+                break
+        return result
 
     def _cache_shows(self):
-        shows = self.get_shows()
+        shows = self._get_shows()
         with open(self.shows_cache_path, 'w') as f:
             f.write(json.dumps(shows))
 
@@ -50,36 +51,53 @@ class Eztv(BaseProvider):
         episodes = sorted(episodes, key=lambda k: (k['season'], k['num']))
         return episodes
 
-    def _search_episode(self, show_title, s, e, episodes):
-        t = Torrent()
+    def _search_episode(self, show, season, episode=None):
         torrents = []
-        for episode in episodes:
-            if s == episode['season'] and episode['num'] == e:
-                t.title = show_title+'.'+'S' + \
-                    str(s)+'E'+str(e)+':'+episode['title']
-                t.torrent_url = episode['torrent_url']
-                t.seeds = episode['seeds']
-                torrents.append(t)
+        all_episodes = self._get_episodes(show['id'])
+        if episode is not None:
+            for ep in all_episodes:
+                if season == ep['season'] and ep['num'] == episode:
+                    t = Torrent()
+                    t.title = show['title']+'.'+'S' + \
+                        str(season)+'E'+str(ep['num'])+':'+ep['title']
+                    t.torrent_url = ep['torrent_url']
+                    t.seeds = ep['seeds']
+                    torrents.append(t)
+        else:
+            for ep in all_episodes:
+                if season == ep['season']:
+                    t = Torrent()
+                    t.title = show['title']+'.'+'S' + \
+                        str(season)+'E'+str(ep['num'])+':'+ep['title']
+                    t.torrent_url = ep['torrent_url']
+                    t.seeds = ep['seeds']
+                    torrents.append(t)
         return torrents
 
-    def _query(self, showname, season, episode):
-        show = self._search_show(showname)[0]
+    def _query(self, showname, season, episode=None):
+        show = self._search_show(showname)
         season = int(season)
-        episode = int(episode)
-        all_episodes = self._get_episodes(show['id'])
+        if episode is not None:
+            episode = int(episode)
         torrents = self._search_episode(
-            show['title'], season, episode, all_episodes)
+            show, season, episode)
         return torrents
 
     def search(self, query):
         results = []
         ep_re = re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
-        match = ep_re.match(query)
-        if match:
-            show = match.group(1)
-            season = match.group(3).strip().split(' ')[0]
-            episode = match.group(3).strip().split(' ')[1]
+        season_re = re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+)$")
+        ep_match = ep_re.match(query)
+        season_match = season_re.match(query)
+        if ep_match:
+            show = ep_match.group(1)
+            season = ep_match.group(3).strip().split(' ')[0]
+            episode = ep_match.group(3).strip().split(' ')[1]
             results = self._query(show, season, episode)
+        elif season_match:
+            show = season_match.group(1)
+            season = season_match.group(3).strip().split(' ')[0]
+            results = self._query(show, season)
         else:
             print 'Badly Formatted Query'
         return results

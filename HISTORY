@@ -1,6 +1,26 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Some fixes. [walid]
+
+- Update README. [walid]
+
+- Better searchapi. [walid]
+
+  use factory pattern
+
+- Fix issues when no subtitles are found. [walid]
+
+1.6.0 (2015-10-12)
+------------------
+
+- Fix rarbg issues. [walid]
+
+  closes #4
+
 1.5.0 (2015-10-11)
 ------------------
 

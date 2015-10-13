@@ -1,6 +1,6 @@
 include cinemaflix/config.ini
 include cinemaflix/providers/cache.json
-
-# added by check_manifest.py
-include *.md
+include README.md
 include LICENSE
+include AUTHORS
+include HISTORY

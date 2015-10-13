@@ -11,6 +11,17 @@ $ git clone git@github.com:walidsa3d/cinemaflix.git
 $ cd cinemaflix
 $ python setup.py install
 ```
+#Requirements
+This program requires peerflix or webtorrent to work.
+```
+$ npm install -g peerflix
+```
+or
+```
+$ npm install -g webtorrent
+```
+You should also have one of the supported players installed : VLC, Mplayer or MPV.
+
 ## Supported Torrent Providers
 - Kickasstorrents
 - Strike
