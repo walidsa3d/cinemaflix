@@ -14,12 +14,12 @@ from utils import opensubtitles as opensubs
 class TSearch(object):
 
     def display_results(self, torrent_list):
-        for index, torrent in enumerate(torrent_list):
+        for index, torrent in enumerate(torrent_list, start=1):
             index = colored(index, 'red', attrs=['blink'])
             title = colored(unicode(torrent.title), 'cyan')
             size = colored(unicode(torrent.size), 'green', attrs=['bold'])
             seeds = colored(torrent.seeds, 'white', attrs=['bold'])
-            print index + ' ' + title + ' ' + size + ' ' + seeds
+            print '{} {} {} {}'.format(index, title, size, seeds)
 
     def categories_menu(self):
         categories = ['Movies', 'Series', 'Anime']
