@@ -67,8 +67,8 @@ class TSearch(object):
                 query, site, sort='seeds', seeds=min_seeds, max=max_results)
         self.display_results(search_results)
         user_input = raw_input('Pick Movie, [e]xit, [b]ack :\t')
-        search_results = dict(enumerate(search_results))
-        while(not user_input.isdigit() or int(user_input) >= len(search_results)):
+        search_results = dict(enumerate(search_results, start=1))
+        while(not user_input.isdigit() or int(user_input) > len(search_results)):
             if user_input == 'e':
                 sys.exit()
             elif user_input == 'b':
