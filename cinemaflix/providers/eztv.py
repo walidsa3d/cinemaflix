@@ -17,7 +17,7 @@ class Eztv(BaseProvider):
             os.path.dirname(__file__), 'cache.json')
 
     def _get_shows(self):
-        shows_url = self.base_url+"shows/"
+        shows_url = self.base_url+'shows/'
         data = requests.get(shows_url).json()
         shows = []
         for url in [shows_url+unicode(x) for x in xrange(1, 16)]:
@@ -27,7 +27,7 @@ class Eztv(BaseProvider):
         return shows
 
     def _search_show(self, query):
-        with open(self.shows_cache_path, "r") as f:
+        with open(self.shows_cache_path, 'r') as f:
             shows = json.load(f)
         result = None
         for show in shows:
@@ -43,19 +43,19 @@ class Eztv(BaseProvider):
             f.write(json.dumps(shows))
 
     def _get_show_episodes(self, show_id):
-        show_url = self.base_url+"show/"+show_id
+        show_url = self.base_url+'show/'+show_id
         data = requests.get(show_url).json()
         episodes = []
         for episode in data['episodes']:
             episodes.append({'num': episode['episode'], 'season': episode['season'], 'title': episode[
-                            'title'], 'torrent_url': episode['torrents']["0"]['url'], 'seeds': episode['torrents']["0"]['seeds']})
+                            'title'], 'torrent_url': episode['torrents']['0']['url'], 'seeds': episode['torrents']['0']['seeds']})
         episodes = sorted(episodes, key=lambda k: (k['season'], k['num']))
         return episodes
 
     def _search_episode(self, show, season=None, episode=None):
         torrents = []
         all_episodes = self._get_show_episodes(show['id'])
-        if episode is not None:
+        if episode is not None and season is not None:
             for ep in all_episodes:
                 if season == ep['season'] and ep['num'] == episode:
                     t = Torrent()
@@ -110,12 +110,9 @@ class Eztv(BaseProvider):
 
     def search(self, query):
         results = []
-        ep_re = re.compile(r"(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
-        season_re = re.compile(r"(([a-zA-Z]+\s*)+)(\s[0-9]+)$")
-        lastest_re = re.compile(r"(([a-zA-Z]+\s*)+)(latest)$")
-        ep_match = ep_re.match(query)
-        season_match = season_re.match(query)
-        latest_match = lastest_re.match(query)
+        ep_match = re.match(r"(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$", query)
+        season_match = re.match(r"(([a-zA-Z]+\s*)+)(\s[0-9]+)$", query)
+        latest_match = re.match(r"(([a-zA-Z]+\s*)+)(latest)$", query)
         if ep_match:
             show = ep_match.group(1)
             season = ep_match.group(3).strip().split(' ')[0]
@@ -129,7 +126,7 @@ class Eztv(BaseProvider):
             show = latest_match.group(1).strip()
             results = self._query(show, latest=True)
         else:
-            print 'Badly Formatted Query'
+            raise ValueError('Badly Formatted Query')
         return results
 
     def get_top(self):
