@@ -4,6 +4,7 @@ import re
 import requests
 
 from models import Torrent
+from operator import itemgetter
 from provider import BaseProvider
 
 
@@ -51,7 +52,7 @@ class Eztv(BaseProvider):
         episodes = sorted(episodes, key=lambda k: (k['season'], k['num']))
         return episodes
 
-    def _search_episode(self, show, season, episode=None):
+    def _search_episode(self, show, season=None, episode=None, latest=False):
         torrents = []
         all_episodes = self._get_episodes(show['id'])
         if episode is not None:
@@ -63,6 +64,7 @@ class Eztv(BaseProvider):
                     t.torrent_url = ep['torrent_url']
                     t.seeds = ep['seeds']
                     torrents.append(t)
+                    break
         else:
             for ep in all_episodes:
                 if season == ep['season']:
@@ -74,21 +76,41 @@ class Eztv(BaseProvider):
                     torrents.append(t)
         return torrents
 
-    def _query(self, showname, season, episode=None):
+    def get_latest(self, show):
+        torrents = []
+        all_episodes = self._get_episodes(show['id'])
+        sorted_episodes = sorted(
+            all_episodes, key=itemgetter('season', 'num'), reverse=True)
+        last_ep = {k: str(v) for k, v in sorted_episodes[0].iteritems()}
+        t = Torrent()
+        t.title = show['title']+'.'+'S' + \
+            last_ep['season']+'E'+last_ep['num']+':'+last_ep['title']
+        t.torrent_url = last_ep['torrent_url']
+        t.seeds = int(last_ep['seeds'])
+        torrents.append(t)
+        return torrents
+
+    def _query(self, showname, season=None, episode=None, latest=False):
         show = self._search_show(showname)
-        season = int(season)
-        if episode is not None:
-            episode = int(episode)
-        torrents = self._search_episode(
-            show, season, episode)
+        if latest:
+            torrents = self.get_latest(show)
+        else:
+            if episode is not None:
+                episode = int(episode)
+            if season is not None:
+                season = int(season)
+            torrents = self._search_episode(
+                show, season, episode)
         return torrents
 
     def search(self, query):
         results = []
-        ep_re = re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
-        season_re = re.compile("(([a-zA-Z]+\s*)+)(\s[0-9]+)$")
+        ep_re = re.compile(r"(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$")
+        season_re = re.compile(r"(([a-zA-Z]+\s*)+)(\s[0-9]+)$")
+        lastest_re = re.compile(r"(([a-zA-Z]+\s*)+)(latest)$")
         ep_match = ep_re.match(query)
         season_match = season_re.match(query)
+        latest_match = lastest_re.match(query)
         if ep_match:
             show = ep_match.group(1)
             season = ep_match.group(3).strip().split(' ')[0]
@@ -98,6 +120,9 @@ class Eztv(BaseProvider):
             show = season_match.group(1)
             season = season_match.group(3).strip().split(' ')[0]
             results = self._query(show, season)
+        elif latest_match:
+            show = latest_match.group(1).strip()
+            results = self._query(show, latest=True)
         else:
             print 'Badly Formatted Query'
         return results
