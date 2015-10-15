@@ -5,8 +5,8 @@ import sys
 
 from utils import TorrentHandler
 
-
 from configobj import ConfigObj
+from sabertooth import subapi
 from termcolor import colored
 from utils import opensubtitles as opensubs
 
@@ -56,7 +56,7 @@ class TSearch(object):
         player = config['player']
         min_seeds = int(config['min_seeds'])
         max_results = int(config['max_results'])
-        cache_path = config['cache_path']
+        cache_path = os.path.expanduser(config['cache_path'])
         category = self.categories_menu()
         site = self.category_menu(category)
         query = raw_input('Search: ')
@@ -79,11 +79,11 @@ class TSearch(object):
                     'Wrong Choice \nPick Movie, [e]xit, [b]ack :\t')
         movie = search_results[int(user_input)].title
         movie_url = search_results[int(user_input)].torrent_url
-        subtitle = opensubs().best_subtitle(movie, ['eng'])
+        subtitle = subapi.best_subtitle('opensubtitles', movie, 'en')
         handler = TorrentHandler(cache_path)
         if subtitle is not None:
             print 'Subtitles found!\nDownloading..'
-            subtitle_file = opensubs().download_subtitle(subtitle, cache_path)
+            subtitle_file = subapi.download('opensubtitles', subtitle, cache_path)
             print 'Streaming ' + movie
             handler.stream(
                 'peerflix', movie_url, player, subtitle=subtitle_file)
