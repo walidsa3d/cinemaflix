@@ -17,6 +17,7 @@ class Eztv(BaseProvider):
             os.path.dirname(__file__), 'cache.json')
 
     def _get_shows(self):
+        """get all shows supported by the api """
         shows_url = self.base_url+'shows/'
         data = requests.get(shows_url).json()
         shows = []
@@ -38,11 +39,13 @@ class Eztv(BaseProvider):
         return result
 
     def _cache_shows(self):
+        """get a list of all shows and save it locally"""
         shows = self._get_shows()
         with open(self.shows_cache_path, 'w') as f:
             f.write(json.dumps(shows))
 
     def _get_show_episodes(self, show_id):
+        """get all episodes of a show"""
         show_url = self.base_url+'show/'+show_id
         data = requests.get(show_url).json()
         episodes = []
@@ -52,7 +55,8 @@ class Eztv(BaseProvider):
         episodes = sorted(episodes, key=lambda k: (k['season'], k['num']))
         return episodes
 
-    def _search_episode(self, show, season=None, episode=None):
+    def _get_episode(self, show, season=None, episode=None):
+        """get the given episode of a show's season"""
         torrents = []
         all_episodes = self._get_show_episodes(show['id'])
         if episode is not None and season is not None:
@@ -68,6 +72,7 @@ class Eztv(BaseProvider):
         return torrents
 
     def _get_season_episodes(self, show, season):
+        """get all episodes of a given season of a show"""
         torrents = []
         all_episodes = self._get_show_episodes(show['id'])
         for ep in all_episodes:
@@ -80,7 +85,8 @@ class Eztv(BaseProvider):
                 torrents.append(t)
         return torrents
 
-    def _get_latest(self, show):
+    def _get_latest_episode(self, show):
+        """get the latest episode of the latest season of a show"""
         torrents = []
         all_episodes = self._get_show_episodes(show['id'])
         sorted_episodes = sorted(
@@ -97,18 +103,19 @@ class Eztv(BaseProvider):
     def _query(self, showname, season=None, episode=None, latest=False):
         show = self._search_show(showname)
         if latest:
-            torrents = self._get_latest(show)
+            torrents = self._get_latest_episode(show)
         elif episode is None:
             season = int(season)
             torrents = self._get_season_episodes(show, season)
         else:
             season = int(season)
             episode = int(episode)
-            torrents = self._search_episode(
+            torrents = self._get_episode(
                 show, season, episode)
         return torrents
 
     def search(self, query):
+        """parse query and get search results """
         results = []
         ep_match = re.match(r"(([a-zA-Z]+\s*)+)(\s[0-9]+\s[0-9]+)$", query)
         season_match = re.match(r"(([a-zA-Z]+\s*)+)(\s[0-9]+)$", query)
