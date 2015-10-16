@@ -21,8 +21,8 @@ class Rarbg(BaseProvider):
         search_url = self.base_url + '/torrents.php'
         cookies = {'7fAY799j': 'VtdTzG69'}
         response = requests.get(
-            search_url, headers=self.headers, params=payload, cookies=cookies).text
-        torrents = self._parse_page(response)
+            search_url, headers=self.headers, params=payload, cookies=cookies)
+        torrents = self._parse_page(response.text)
         return torrents
 
     def get_top(self):
@@ -46,7 +46,7 @@ class Rarbg(BaseProvider):
                 title = requests.utils.quote(t.title) + "-[rarbg.com].torrent"
                 download_url = self.base_url + "/download.php?id=%s&f=%s" % (
                     rarbg_id, title)
-                t.torrent_url = self.to_magnet(download_url)
+                t.torrent_url = self._to_magnet(download_url)
                 t.size = rows[3].text
                 t.seeds = int(rows[4].text)
                 torrents.append(t)
@@ -54,13 +54,13 @@ class Rarbg(BaseProvider):
                 pass
         return torrents
 
-    def to_magnet(self, torrent_link):
+    def _to_magnet(self, torrent_link):
         """converts a torrent file to a magnet link"""
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36', 'Referer': 'https://rarbg.to/torrent/'}
+        self.headers.update({'Referer': 'https://rarbg.to/torrent/'})
+        headers = self.headers
         cookies = {'7fAY799j': 'VtdTzG69'}
         response = requests.get(
-            torrent_link, headers=headers, timeout=20, allow_redirects=True, cookies=cookies, )
+            torrent_link, headers=headers, timeout=20, cookies=cookies)
         with open('/tmp/tempfile.torrent', 'w') as out_file:
             out_file.write(response.content)
         torrent = open('/tmp/tempfile.torrent', 'r').read()

@@ -8,8 +8,6 @@ from utils import TorrentHandler
 from configobj import ConfigObj
 from sabertooth import subapi
 from termcolor import colored
-from utils import opensubtitles as opensubs
-
 
 class TSearch(object):
 

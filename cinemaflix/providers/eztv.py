@@ -14,9 +14,9 @@ class Eztv(BaseProvider):
         super(Eztv, self).__init__(base_url)
         self.shows = []
         self.shows_cache_path = os.path.join(
-            os.path.dirname(__file__), 'cache.json')
+            os.path.dirname(__file__), 'showscache.json')
 
-    def _get_shows(self):
+    def _get_all_shows(self):
         """get all shows supported by the api """
         shows_url = self.base_url+'shows/'
         data = requests.get(shows_url).json()
@@ -40,7 +40,7 @@ class Eztv(BaseProvider):
 
     def _cache_shows(self):
         """get a list of all shows and save it locally"""
-        shows = self._get_shows()
+        shows = self._get_all_shows()
         with open(self.shows_cache_path, 'w') as f:
             f.write(json.dumps(shows))
 
@@ -63,8 +63,8 @@ class Eztv(BaseProvider):
             for ep in all_episodes:
                 if season == ep['season'] and ep['num'] == episode:
                     t = Torrent()
-                    t.title = show['title']+'.'+'S' + \
-                        str(season)+'E'+str(ep['num'])+':'+ep['title']
+                    t.title = '{}.S{}E{}:{}'.format(
+                        show['title'], ep['season'], ep['num'], ep['title'])
                     t.torrent_url = ep['torrent_url']
                     t.seeds = ep['seeds']
                     torrents.append(t)
@@ -78,8 +78,8 @@ class Eztv(BaseProvider):
         for ep in all_episodes:
             if season == ep['season']:
                 t = Torrent()
-                t.title = show['title']+'.'+'S' + \
-                    str(season)+'E'+str(ep['num'])+':'+ep['title']
+                t.title = '{}.S{}E{}:{}'.format(
+                    show['title'], ep['season'], ep['num'], ep['title'])
                 t.torrent_url = ep['torrent_url']
                 t.seeds = ep['seeds']
                 torrents.append(t)
@@ -93,8 +93,8 @@ class Eztv(BaseProvider):
             all_episodes, key=itemgetter('season', 'num'), reverse=True)
         last_ep = {k: str(v) for k, v in sorted_episodes[0].iteritems()}
         t = Torrent()
-        t.title = show['title']+'.'+'S' + \
-            last_ep['season']+'E'+last_ep['num']+':'+last_ep['title']
+        t.title = '{}.S{}E{}:{}'.format(
+            show['title'], last_ep['season'], last_ep['num'], last_ep['title'])
         t.torrent_url = last_ep['torrent_url']
         t.seeds = int(last_ep['seeds'])
         torrents.append(t)
@@ -102,6 +102,9 @@ class Eztv(BaseProvider):
 
     def _query(self, showname, season=None, episode=None, latest=False):
         show = self._search_show(showname)
+        if show is None:
+            print 'Show Not Found'
+            return
         if latest:
             torrents = self._get_latest_episode(show)
         elif episode is None:
