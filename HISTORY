@@ -4,6 +4,32 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Rename cache to showscache. [walid]
+
+- Merge branch 'master' into dev. [walid]
+
+- (eztv) fix formatting, add comments. [walid]
+
+- Refactor code. [walid]
+
+- (eztv) refactoring. [walid]
+
+- Subtitles are now handled by sabertooth. [walid]
+
+- (eztv) get latest show episode. [walid]
+
+  closes #8
+
+- (eztv) fix wrong numbering. [walid]
+
+1.7.0 (2015-10-13)
+------------------
+
+- Make eztv work again. [walid]
+
+  update shows cache
+  allow search by season only
+
 - Some fixes. [walid]
 
 - Update README. [walid]

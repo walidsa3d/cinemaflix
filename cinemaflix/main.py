@@ -1,13 +1,14 @@
 import inquirer
 import os
-import providers.searchapi as api
+import providers.searchapi as searchapi
 import sys
 
-from utils import TorrentHandler
-
 from configobj import ConfigObj
+from dateutil.parser import parse
+from prettytable import PrettyTable
 from sabertooth import subapi
 from termcolor import colored
+from utils import TorrentHandler
 
 class TSearch(object):
 
@@ -18,6 +19,18 @@ class TSearch(object):
             size = colored(unicode(torrent.size), 'green', attrs=['bold'])
             seeds = colored(torrent.seeds, 'white', attrs=['bold'])
             print '{} {} {} {}'.format(index, title, size, seeds)
+
+    def display_subtitles(self, data):
+        output = PrettyTable(["I", "Lang", "Release", "Date"])
+        output.align = "l"
+        for item in data:
+            index = colored(item, 'red')
+            lang = colored(data[item]['lang'], 'yellow', 'on_grey')
+            dt = parse(data[item]['date'])
+            date = colored(dt.strftime('%d/%m/%Y'), 'blue')
+            release = colored(data[item]["movie"].encode('utf-8').strip(), 'green')
+            output.add_row([index, lang, release, date])
+        print output
 
     def categories_menu(self):
         categories = ['Movies', 'Series', 'Anime']
@@ -59,9 +72,9 @@ class TSearch(object):
         site = self.category_menu(category)
         query = raw_input('Search: ')
         if query == '':
-            search_results = api.get_top(site)
+            search_results = searchapi.get_top(site)
         else:
-            search_results = api.search(
+            search_results = searchapi.search(
                 query, site, sort='seeds', seeds=min_seeds, max=max_results)
         self.display_results(search_results)
         user_input = raw_input('Pick Movie, [e]xit, [b]ack :\t')
@@ -77,11 +90,14 @@ class TSearch(object):
                     'Wrong Choice \nPick Movie, [e]xit, [b]ack :\t')
         movie = search_results[int(user_input)].title
         movie_url = search_results[int(user_input)].torrent_url
-        subtitle = subapi.best_subtitle('opensubtitles', movie, 'en')
+        subtitles = subapi.search('opensubtitles', movie, maxnumber=10, lang='en')
         handler = TorrentHandler(cache_path)
-        if subtitle is not None:
-            print 'Subtitles found!\nDownloading..'
-            subtitle_file = subapi.download('opensubtitles', subtitle, cache_path)
+        if subtitles:
+            subtitles = dict(enumerate(subtitles, start=1))
+            self.display_subtitles(subtitles)
+            sub_choice = raw_input('Choose Subtitle:\t')
+            sub_choice = subtitles[int(sub_choice)]
+            subtitle_file = subapi.download('opensubtitles', sub_choice, cache_path)
             print 'Streaming ' + movie
             handler.stream(
                 'peerflix', movie_url, player, subtitle=subtitle_file)
