@@ -99,7 +99,7 @@ class TSearch(object):
             subtitles = dict(enumerate(subtitles, start=1))
             self.display_subtitles(subtitles)
             sub_choice = raw_input('Choose Subtitle:\t')
-            if sub_choice not in range(1, 10):
+            if sub_choice not in map(str, range(1, 10)):
                 print "Choice Not Available"
                 return
             sub_choice = subtitles[int(sub_choice)]
