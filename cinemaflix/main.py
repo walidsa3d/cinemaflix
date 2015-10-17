@@ -10,6 +10,7 @@ from sabertooth import subapi
 from termcolor import colored
 from utils import TorrentHandler
 
+
 class TSearch(object):
 
     def display_results(self, torrent_list):
@@ -28,7 +29,8 @@ class TSearch(object):
             lang = colored(data[item]['lang'], 'yellow', 'on_grey')
             dt = parse(data[item]['date'])
             date = colored(dt.strftime('%d/%m/%Y'), 'blue')
-            release = colored(data[item]["movie"].encode('utf-8').strip(), 'green')
+            release = colored(
+                data[item]["movie"].encode('utf-8').strip(), 'green')
             output.add_row([index, lang, release, date])
         print output
 
@@ -90,21 +92,30 @@ class TSearch(object):
                     'Wrong Choice \nPick Movie, [e]xit, [b]ack :\t')
         movie = search_results[int(user_input)].title
         movie_url = search_results[int(user_input)].torrent_url
-        subtitles = subapi.search('opensubtitles', movie, maxnumber=10, lang='en')
+        subtitles = subapi.search(
+            'opensubtitles', movie, maxnumber=10, lang='en')
         handler = TorrentHandler(cache_path)
         if subtitles:
             subtitles = dict(enumerate(subtitles, start=1))
             self.display_subtitles(subtitles)
             sub_choice = raw_input('Choose Subtitle:\t')
+            if sub_choice not in range(1, 10):
+                print "Choice Not Available"
+                return
             sub_choice = subtitles[int(sub_choice)]
-            subtitle_file = subapi.download('opensubtitles', sub_choice, cache_path)
+            subtitle_file = subapi.download(
+                'opensubtitles', sub_choice, cache_path)
             print 'Streaming ' + movie
             handler.stream(
                 'peerflix', movie_url, player, subtitle=subtitle_file)
         else:
-            print 'No subtitles found'
-            print 'Streaming ' + movie
-            handler.stream('peerflix', movie_url, player, subtitle=None)
+            print 'No subtitles found\n'
+            streamit = raw_input('Stream movie? (y/n)\t')
+            if streamit == "y":
+                print 'Streaming ' + movie
+                handler.stream('peerflix', movie_url, player, subtitle=None)
+            else:
+                return
 
 if __name__ == '__main__':
     TSearch().main()

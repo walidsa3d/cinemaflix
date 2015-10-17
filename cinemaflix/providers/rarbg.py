@@ -5,10 +5,11 @@ import base64
 import bencode
 import hashlib
 
+import tempfile
+
 from bs4 import BeautifulSoup as BS
 from models import Torrent
 from provider import BaseProvider
-
 
 class Rarbg(BaseProvider):
 
@@ -61,9 +62,11 @@ class Rarbg(BaseProvider):
         cookies = {'7fAY799j': 'VtdTzG69'}
         response = requests.get(
             torrent_link, headers=headers, timeout=20, cookies=cookies)
-        with open('/tmp/tempfile.torrent', 'w') as out_file:
-            out_file.write(response.content)
-        torrent = open('/tmp/tempfile.torrent', 'r').read()
+        temp = tempfile.TemporaryFile()
+        temp.write(response.content)
+        temp.seek(0)
+        torrent = temp.read()
+        temp.close()
         metadata = bencode.bdecode(torrent)
         hashcontents = bencode.bencode(metadata['info'])
         digest = hashlib.sha1(hashcontents).digest()
