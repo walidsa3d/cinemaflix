@@ -1,5 +1,5 @@
 include cinemaflix/config.ini
-include cinemaflix/providers/cache.json
+include cinemaflix/providers/showscache.json
 include README.md
 include LICENSE
 include AUTHORS
