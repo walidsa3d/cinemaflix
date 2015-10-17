@@ -63,14 +63,28 @@ class TSearch(object):
         site = inquirer.prompt(subs)['site'].lower()
         return site
 
+    def show_banner(self):
+        asterisk = colored('*', 'red')
+        vertical_bar = colored('|', 'yellow')
+        horizontal_bar = colored('-', 'blue')
+        word = colored('CINEMAFLIX', 'yellow', attrs=['bold'])
+        print horizontal_bar*50
+        print vertical_bar+asterisk*19+word+asterisk*19+vertical_bar
+        print vertical_bar+asterisk*48+vertical_bar
+        print horizontal_bar*50
+
     def main(self):
+        self.show_banner()
+        # read config file
         configfile = os.path.join(os.path.dirname(__file__), 'config.ini')
         config = ConfigObj(configfile)
         player = config['player']
         min_seeds = int(config['min_seeds'])
         max_results = int(config['max_results'])
         cache_path = os.path.expanduser(config['cache_path'])
+        # show categories menu
         category = self.categories_menu()
+        # show site picker
         site = self.category_menu(category)
         query = raw_input('Search: ')
         if query == '':
@@ -92,9 +106,9 @@ class TSearch(object):
                     'Wrong Choice \nPick Movie, [e]xit, [b]ack :\t')
         movie = search_results[int(user_input)].title
         movie_url = search_results[int(user_input)].torrent_url
+        handler = TorrentHandler(cache_path)
         subtitles = subapi.search(
             'opensubtitles', movie, maxnumber=10, lang='en')
-        handler = TorrentHandler(cache_path)
         if subtitles:
             subtitles = dict(enumerate(subtitles, start=1))
             self.display_subtitles(subtitles)
