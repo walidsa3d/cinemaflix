@@ -19,7 +19,7 @@ class TSearch(object):
             title = colored(unicode(torrent.title), 'cyan')
             size = colored(unicode(torrent.size), 'green', attrs=['bold'])
             seeds = colored(torrent.seeds, 'white', attrs=['bold'])
-            print '{} {} {} {}'.format(index, title, size, seeds)
+            print u'{} {} {} {}'.format(index, title, size, seeds)
 
     def display_subtitles(self, data):
         output = PrettyTable(["I", "Lang", "Release", "Date"])
