@@ -13,8 +13,11 @@ class YTS(BaseProvider):
         payload = {
             'query_term': query, 'sort': 'title', 'order': 'desc', 'set': '1'}
         search_url = self.base_url + '/api/v2/list_movies.json'
-        response = requests.get(
-            search_url, params=payload, headers=self.headers).json()
+        try:
+            response = requests.get(
+                search_url, params=payload, headers=self.headers).json()
+        except Exception as e:
+            return
         torrents = []
         for movie in response['data']['movies']:
             for torrent in movie['torrents']:
@@ -30,8 +33,11 @@ class YTS(BaseProvider):
         payload = {
             'sort': 'date_added', 'order': 'desc', 'set': '1', 'limit': 20}
         search_url = self.base_url + '/api/v2/list_movies.json'
-        response = requests.get(
-            search_url, params=payload, headers=self.headers).json()
+        try:
+            response = requests.get(
+                search_url, params=payload, headers=self.headers).json()
+        except Exception as e:
+            return
         torrents = []
         for movie in response['data']['movies']:
             for torrent in movie['torrents']:

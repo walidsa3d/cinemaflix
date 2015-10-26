@@ -101,7 +101,10 @@ class Eztv(BaseProvider):
         return torrents
 
     def _query(self, showname, season=None, episode=None, latest=False):
-        show = self._search_show(showname)
+        try:
+            show = self._search_show(showname)
+        except Exception as e:
+            return
         if show is None:
             print 'Show Not Found'
             return

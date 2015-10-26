@@ -20,11 +20,7 @@ class Strike(BaseProvider):
         return torrents
 
     def get_top(self):
-        search_url = "https://getstrike.net/api/v2/torrents/search/"
-        payload = {'phrase': "-zzzzz", 'category': 'Movies'}
-        response = requests.get(
-            search_url, params=payload, headers=self.headers).json()
-        torrents = self._parse_page(response)
+        torrents = []
         return torrents
 
     def _parse_page(self, page_text):

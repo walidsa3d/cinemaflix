@@ -92,7 +92,11 @@ class TSearch(object):
         else:
             search_results = searchapi.search(
                 query, site, sort='seeds', seeds=min_seeds, max=max_results)
-        self.display_results(search_results)
+        if search_results:
+            self.display_results(search_results)
+        else:
+            print "No results Available"
+            return
         user_input = raw_input('Pick Movie, [e]xit, [b]ack :\t')
         search_results = dict(enumerate(search_results, start=1))
         while(not user_input.isdigit() or int(user_input) > len(search_results)):
