@@ -4,6 +4,31 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- (yts, eztv, strike) better error handling. [walid]
+
+- (main) fix unicode error. [walid]
+
+- Add banner. [walid]
+
+- Fix error in subtitle picker. [walid]
+
+- Improve exception handling for subtitles picker. [walid]
+
+- Fix MANIFEST.in. [walid]
+
+- Merge branch 'master' of github.com:walidsa3d/cinemaflix. [walid]
+
+- Add subtitle picker. [walid]
+
+  closes #6
+
+1.8.0 (2015-10-16)
+------------------
+
+- Add subtitle picker. [walid]
+
+  closes #8
+
 - Rename cache to showscache. [walid]
 
 - Merge branch 'master' into dev. [walid]

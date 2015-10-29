@@ -1,6 +1,6 @@
 TPB_URL = "https://thepiratebay.la"
 KICKASS_URL = "http://kat.cr"
-EZTV_URL = "http://eztvapi.re/"
+EZTV_URL = "http://eztvapi.co.za/"
 NYAA_URL = "http://www.nyaa.se/"
 YTS_URL = "http://yts.to"
 RARBG_URL = "https://rarbg.to"
