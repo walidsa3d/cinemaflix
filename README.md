@@ -1,5 +1,6 @@
 # Cinemaflix
-[cinemaflix](https://img.shields.io/pypi/dm/cinemaflix.svg)
+![cinemaflix](https://img.shields.io/pypi/dm/cinemaflix.svg)
+
 A console application for searching and streaming movies, anime and series.
 
 #Install (automatic)
