@@ -9,10 +9,11 @@ from rarbg import Rarbg
 from strike import Strike
 from tpb import TPB
 from yts import YTS
+from rarbgapi import RarbgAPI
 
 providers = {
     "kickass": (Kickass, KICKASS_URL),
-    "rarbg": (Rarbg, RARBG_URL),
+    "rarbg": (RarbgAPI, RARBG_API_URL),
     "yts": (YTS, YTS_URL),
     "thepiratebay": (TPB, TPB_URL),
     "cpasbien": (Cpasbien, CPABSIEN_URL),

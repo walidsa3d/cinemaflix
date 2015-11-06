@@ -1,8 +1,10 @@
 Changelog
 =========
 
-%%version%% (unreleased)
-------------------------
+1.8.1 (2015-10-29)
+------------------
+
+- (eztv) use new working url. [walid]
 
 - (yts, eztv, strike) better error handling. [walid]
 

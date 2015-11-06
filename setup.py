@@ -11,7 +11,7 @@ except ImportError:
 
 setup(
     name='cinemaflix',
-    version='1.8.1',
+    version='2.0.0',
     description="A command line tool  to find and play movies online",
     long_description=read_md('README.md'),
     author='Walid Saad',
