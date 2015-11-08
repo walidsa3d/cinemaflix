@@ -1,26 +1,24 @@
 # Cinemaflix
-![cinemaflix](https://img.shields.io/pypi/dm/cinemaflix.svg)
+![downloads](https://img.shields.io/pypi/dm/cinemaflix.svg)
+![version](https://img.shields.io/pypi/v/cinemaflix.svg)
+![license](https://img.shields.io/pypi/l/cinemaflix.svg)
 
 A console application for searching and streaming movies, anime and series.
 
-#Install (automatic)
+# Install (automatic)
 ```
 $ pip install cinemaflix
 ```
-#Install (manual)
+# Install (manual)
 ```
 $ git clone git@github.com:walidsa3d/cinemaflix.git
 $ cd cinemaflix
 $ python setup.py install
 ```
-#Requirements
-This program requires peerflix or webtorrent to work.
+# Requirements
+This program requires peerflix.
 ```
 $ npm install -g peerflix
-```
-or
-```
-$ npm install -g webtorrent
 ```
 You should also have one of the supported players installed : VLC, Mplayer or MPV.
 
@@ -28,19 +26,18 @@ You should also have one of the supported players installed : VLC, Mplayer or MP
 - Kickasstorrents
 - Strike
 - The Pirate Bay
-- Yify
 - Nyaa.se
 - Eztv
 - Cpasbien
 
-#Demo
+# Demo
 ![demo](https://cloud.githubusercontent.com/assets/821918/10253063/3cbba214-6933-11e5-9674-8aae44013463.gif)
 
-#License
+# License
 ```
 The MIT License (MIT)
 
-Copyright (c) 2015  Walid Saad and contributors
+Copyright (c) 2015  Walid Saad
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

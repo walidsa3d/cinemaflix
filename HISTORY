@@ -1,6 +1,16 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Update readme. [walid]
+
+2.0.0 (2015-11-06)
+------------------
+
+- Remove support for yts (no longer exists) [walid]
+
 1.8.1 (2015-10-29)
 ------------------
 

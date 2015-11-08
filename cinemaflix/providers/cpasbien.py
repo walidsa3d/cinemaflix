@@ -11,7 +11,7 @@ class Cpasbien(BaseProvider):
         super(Cpasbien, self).__init__(base_url)
 
     def search(self, query):
-        search_url = "%s%s%s".format(self.base_url, query, ".html,trie-seeds-d")
+        search_url = "{}{}{}".format(self.base_url, query, ".html,trie-seeds-d")
         response = requests.get(search_url).text
         torrents = self._parse_page(response)
         return torrents
@@ -20,10 +20,10 @@ class Cpasbien(BaseProvider):
         response = requests.get(page_url).text
         soup = BS(response, "lxml")
         relative_link = soup.find('a', id='telecharger').get('href')
-        return "http://www.cpasbien.pw"+relative_link
+        return "http://www.cpasbien.io"+relative_link
 
     def get_top(self):
-        top_url = "http://www.cpasbien.pw/view_cat.php?categorie=films&trie=seeds-d"
+        top_url = "http://www.cpasbien.io/view_cat.php?categorie=films&trie=seeds-d"
         response = requests.get(top_url).text
         torrents = self._parse_page(response)
         return torrents
