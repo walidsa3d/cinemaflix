@@ -1,4 +1,6 @@
 # Cinemaflix
+
+[![Join the chat at https://gitter.im/walidsa3d/cinemaflix](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/walidsa3d/cinemaflix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![downloads](https://img.shields.io/pypi/dm/cinemaflix.svg)
 ![version](https://img.shields.io/pypi/v/cinemaflix.svg)
 ![license](https://img.shields.io/pypi/l/cinemaflix.svg)
