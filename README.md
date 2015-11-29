@@ -4,6 +4,7 @@
 ![downloads](https://img.shields.io/pypi/dm/cinemaflix.svg)
 ![version](https://img.shields.io/pypi/v/cinemaflix.svg)
 ![license](https://img.shields.io/pypi/l/cinemaflix.svg)
+[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 
 A console application for searching and streaming movies, anime and series.
 
@@ -25,6 +26,7 @@ $ npm install -g peerflix
 You should also have one of the supported players installed : VLC, Mplayer or MPV.
 
 ## Supported Torrent Providers
+- Yts
 - Kickasstorrents
 - Strike
 - The Pirate Bay
