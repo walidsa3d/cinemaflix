@@ -5,4 +5,4 @@ install:
   - python setup.py install
   - pip install pep8
 script:
-  - pep8 cinemaflix/ --ignore E501
+  - 'pep8 cinemaflix/ --ignore E501,E731'
