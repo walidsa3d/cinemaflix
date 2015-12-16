@@ -68,10 +68,11 @@ class TSearch(object):
         vertical_bar = colored('|', 'yellow')
         horizontal_bar = colored('-', 'blue')
         word = colored('CINEMAFLIX', 'yellow', attrs=['bold'])
-        print horizontal_bar*50
-        print vertical_bar+asterisk*19+word+asterisk*19+vertical_bar
-        print vertical_bar+asterisk*48+vertical_bar
-        print horizontal_bar*50
+        print horizontal_bar * 50
+        print vertical_bar + asterisk * 19 + word + asterisk * 19 + \
+            vertical_bar
+        print vertical_bar + asterisk * 48 + vertical_bar
+        print horizontal_bar * 50
 
     def main(self):
         self.show_banner()
@@ -99,7 +100,8 @@ class TSearch(object):
             return
         user_input = raw_input('Pick Movie, [e]xit, [b]ack :\t')
         search_results = dict(enumerate(search_results, start=1))
-        while(not user_input.isdigit() or int(user_input) > len(search_results)):
+        while(not user_input.isdigit() or
+                int(user_input) > len(search_results)):
             if user_input == 'e':
                 sys.exit()
             elif user_input == 'b':

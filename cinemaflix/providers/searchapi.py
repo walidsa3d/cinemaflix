@@ -5,7 +5,6 @@ from eztv import Eztv
 from kickass import Kickass
 from nyaa import Nyaa
 from operator import attrgetter
-from rarbg import Rarbg
 from strike import Strike
 from tpb import TPB
 from yts import YTS

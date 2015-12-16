@@ -18,10 +18,10 @@ class Eztv(BaseProvider):
 
     def _get_all_shows(self):
         """get all shows supported by the api """
-        shows_url = self.base_url+'shows/'
+        shows_url = self.base_url + 'shows/'
         data = requests.get(shows_url).json()
         shows = []
-        for url in [shows_url+unicode(x) for x in xrange(1, 16)]:
+        for url in [shows_url + unicode(x) for x in xrange(1, 16)]:
             data = requests.get(url).json()
             for show in data:
                 shows.append({'id': show['imdb_id'], 'title': show['title']})
@@ -46,12 +46,18 @@ class Eztv(BaseProvider):
 
     def _get_show_episodes(self, show_id):
         """get all episodes of a show"""
-        show_url = self.base_url+'show/'+show_id
+        show_url = self.base_url + 'show/' + show_id
         data = requests.get(show_url).json()
         episodes = []
         for episode in data['episodes']:
-            episodes.append({'num': episode['episode'], 'season': episode['season'], 'title': episode[
-                            'title'], 'torrent_url': episode['torrents']['0']['url'], 'seeds': episode['torrents']['0']['seeds']})
+            episodes.append(
+                {
+                    'num': episode['episode'],
+                    'season': episode['season'],
+                    'title': episode['title'],
+                    'torrent_url': episode['torrents']['0']['url'],
+                    'seeds': episode['torrents']['0']['seeds']
+                })
         episodes = sorted(episodes, key=lambda k: (k['season'], k['num']))
         return episodes
 
@@ -103,7 +109,7 @@ class Eztv(BaseProvider):
     def _query(self, showname, season=None, episode=None, latest=False):
         try:
             show = self._search_show(showname)
-        except Exception as e:
+        except Exception:
             return
         if show is None:
             print 'Show Not Found'

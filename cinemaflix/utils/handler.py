@@ -31,7 +31,7 @@ class TorrentHandler(object):
         command = 'webtorrent "{}" --{} -o {}'.format(
             link, player, self.cache_path)
         if subtitle is not None:
-            command = command+' --subtitles "%s"' % subtitle
+            command = command + ' --subtitles "%s"' % subtitle
         subprocess.Popen(command)
 
     def stream(self, handler, link, player, subtitle=None):
