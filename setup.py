@@ -25,7 +25,7 @@ setup(
                       'requests',
                       'beautifulsoup4',
                       'sabertooth',
-                      'python-inquirer',
+                      'inquirer',
                       'termcolor',
                       'prettytable'],
     entry_points={"console_scripts": ["cinemaflix=cinemaflix.cli:cli"]},
