@@ -1,6 +1,34 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Remove strike as it is dead, improve rarbg. [walid]
+
+- Tpb: change domain. [walid]
+
+- Kickass: humanize torrent sizes. [walid]
+
+- Remove anime category, keep only movies. [walid]
+
+- Add install_requires to setup.py. [walid]
+
+- Release patch. [walid]
+
+- Merge branch 'master' of github.com:walidsa3d/cinemaflix. [walid]
+
+- Merge pull request #9 from gitter-badger/gitter-badge. [The Capsian]
+
+  Add a Gitter chat badge to README.md
+
+- Add Gitter badge. [The Gitter Badger]
+
+2.2.0 (2015-11-29)
+------------------
+
+- Enable yts (after switching to new url) [walid]
+
 2.1.0 (2015-11-08)
 ------------------
 
