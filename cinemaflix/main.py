@@ -34,26 +34,10 @@ class TSearch(object):
             output.add_row([index, lang, release, date])
         print output
 
-    def categories_menu(self):
-        categories = ['Movies', 'Series', 'Anime']
-        subs = [
-            inquirer.List('category',
-                          message='Choose a Category',
-                          choices=categories,
-                          ),
-        ]
-        category = inquirer.prompt(subs)['category'].lower()
-        return category
-
-    def category_menu(self, category):
+    def providers_menu(self):
         movie_sites = ['Yts', 'Kickass', 'ThePirateBay', 'Rarbg',
                        'Cpasbien', 'Strike']
-        series_sites = ['EZTV']
-        anime_sites = ['Nyaa']
-        sites = {'movies': movie_sites,
-                 'series': series_sites,
-                 'anime': anime_sites
-                 }.get(category, None)
+        sites = movie_sites
         subs = [
             inquirer.List('site',
                           message='Choose a Provider',
@@ -63,18 +47,7 @@ class TSearch(object):
         site = inquirer.prompt(subs)['site'].lower()
         return site
 
-    def show_banner(self):
-        asterisk = colored('*', 'red')
-        vertical_bar = colored('|', 'yellow')
-        horizontal_bar = colored('-', 'blue')
-        word = colored('CINEMAFLIX', 'yellow', attrs=['bold'])
-        print horizontal_bar*50
-        print vertical_bar+asterisk*19+word+asterisk*19+vertical_bar
-        print vertical_bar+asterisk*48+vertical_bar
-        print horizontal_bar*50
-
     def main(self):
-        self.show_banner()
         # read config file
         configfile = os.path.join(os.path.dirname(__file__), 'config.ini')
         config = ConfigObj(configfile)
@@ -82,10 +55,7 @@ class TSearch(object):
         min_seeds = int(config['min_seeds'])
         max_results = int(config['max_results'])
         cache_path = os.path.expanduser(config['cache_path'])
-        # show categories menu
-        category = self.categories_menu()
-        # show site picker
-        site = self.category_menu(category)
+        site = self.providers_menu()
         query = raw_input('Search: ')
         if query == '':
             search_results = searchapi.get_top(site)
