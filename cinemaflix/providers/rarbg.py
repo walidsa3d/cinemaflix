@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup as BS
 from models import Torrent
 from provider import BaseProvider
 
+
 class Rarbg(BaseProvider):
 
     def __init__(self, base_url):

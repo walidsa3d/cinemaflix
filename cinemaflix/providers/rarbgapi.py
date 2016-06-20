@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
 
-from torrentutils import hsize
 from models import Torrent
 from provider import BaseProvider
 
@@ -27,7 +26,7 @@ class RarbgAPI(BaseProvider):
             'mode': 'search',
             'app_id': 'xxx',
             'format': 'json_extended',
-            'search_string': queryt,
+            'search_string': query,
             'token': self.token,
 
         }
@@ -37,7 +36,7 @@ class RarbgAPI(BaseProvider):
             t = Torrent()
             t.title = result['title']
             t.seeds = result['seeders']
-            t.size = hsize(result['size'])
+            t.size = (result['size'])
             t.torrent_url = result['download']
             torrents.append(t)
         return torrents

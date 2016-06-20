@@ -1,7 +1,7 @@
 import requests
 
-import torrentutils
 
+from humanize import naturalsize
 from bs4 import BeautifulSoup as BS
 from models import Torrent
 from provider import BaseProvider
@@ -22,7 +22,7 @@ class Kickass(BaseProvider):
             t = Torrent()
             t.title = movie['title']
             t.seeds = int(movie['seeds'])
-            t.size = torrentutils.hsize(movie['size'])
+            t.size = naturalsize(movie['size'])
             t.torrent_url = movie['torrentLink']
             torrents.append(t)
         return torrents

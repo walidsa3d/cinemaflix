@@ -29,7 +29,7 @@ class Strike(BaseProvider):
             t = Torrent()
             t.title = result['torrent_title']
             t.seeds = result['seeds']
-            t.size = torrentutils.hsize(result['size'])
+            t.size = result['size']
             t.torrent_url = result['magnet_uri']
             torrents.append(t)
         return torrents[:50]

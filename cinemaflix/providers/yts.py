@@ -2,7 +2,7 @@ import requests
 
 from models import Torrent
 from provider import BaseProvider
-
+from humanize import naturalsize
 
 class YTS(BaseProvider):
 

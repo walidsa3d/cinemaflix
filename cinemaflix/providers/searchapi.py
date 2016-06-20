@@ -1,7 +1,6 @@
 
 from constants import *
 from cpasbien import Cpasbien
-from eztv import Eztv
 from kickass import Kickass
 from nyaa import Nyaa
 from operator import attrgetter
@@ -19,7 +18,6 @@ providers = {
     "cpasbien": (Cpasbien, CPABSIEN_URL),
     "strike": (Strike, STRIKE_URL),
     "nyaa": (Nyaa, NYAA_URL),
-    "eztv": (Eztv, EZTV_URL)
 }
 
 
