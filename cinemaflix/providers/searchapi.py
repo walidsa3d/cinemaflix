@@ -2,10 +2,8 @@
 from constants import *
 from cpasbien import Cpasbien
 from kickass import Kickass
-from nyaa import Nyaa
 from operator import attrgetter
 from rarbg import Rarbg
-from strike import Strike
 from tpb import TPB
 from yts import YTS
 from rarbgapi import RarbgAPI
@@ -16,8 +14,6 @@ providers = {
     "yts": (YTS, YTS_URL),
     "thepiratebay": (TPB, TPB_URL),
     "cpasbien": (Cpasbien, CPABSIEN_URL),
-    "strike": (Strike, STRIKE_URL),
-    "nyaa": (Nyaa, NYAA_URL),
 }
 
 

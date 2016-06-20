@@ -6,7 +6,7 @@ import bencode
 import hashlib
 
 import tempfile
-
+from humanize import naturalsize
 from bs4 import BeautifulSoup as BS
 from models import Torrent
 from provider import BaseProvider
@@ -49,7 +49,7 @@ class Rarbg(BaseProvider):
                 download_url = self.base_url + "/download.php?id=%s&f=%s" % (
                     rarbg_id, title)
                 t.torrent_url = self._to_magnet(download_url)
-                t.size = rows[3].text
+                t.size = naturalsize(rows[3].text)
                 t.seeds = int(rows[4].text)
                 torrents.append(t)
             except bencode.BTL.BTFailure:

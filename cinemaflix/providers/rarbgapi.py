@@ -3,6 +3,7 @@ import requests
 
 from models import Torrent
 from provider import BaseProvider
+from humanize import naturalsize
 
 
 class RarbgAPI(BaseProvider):
@@ -13,7 +14,7 @@ class RarbgAPI(BaseProvider):
     def _get_token(self):
         token_payload = {
             'get_token': 'get_token',
-            'app_id': 'xx',
+            'app_id': 'cinemaflix',
         }
         response = requests.get(self.base_url, params=token_payload).json()
         self.token = response['token']
@@ -36,7 +37,7 @@ class RarbgAPI(BaseProvider):
             t = Torrent()
             t.title = result['title']
             t.seeds = result['seeders']
-            t.size = (result['size'])
+            t.size = naturalsize(result['size'])
             t.torrent_url = result['download']
             torrents.append(t)
         return torrents

@@ -36,7 +36,7 @@ class TSearch(object):
 
     def providers_menu(self):
         movie_sites = ['Yts', 'Kickass', 'ThePirateBay', 'Rarbg',
-                       'Cpasbien', 'Strike']
+                       'Cpasbien']
         sites = movie_sites
         subs = [
             inquirer.List('site',
