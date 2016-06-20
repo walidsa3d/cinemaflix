@@ -8,7 +8,7 @@ from dateutil.parser import parse
 from prettytable import PrettyTable
 from sabertooth import subapi
 from termcolor import colored
-from utils import TorrentHandler
+from utils.handler import TorrentHandler
 
 
 class TSearch(object):
@@ -69,7 +69,8 @@ class TSearch(object):
             return
         user_input = raw_input('Pick Movie, [e]xit, [b]ack :\t')
         search_results = dict(enumerate(search_results, start=1))
-        while(not user_input.isdigit() or int(user_input) > len(search_results)):
+        while(not user_input.isdigit() or
+                int(user_input) > len(search_results)):
             if user_input == 'e':
                 sys.exit()
             elif user_input == 'b':

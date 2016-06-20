@@ -25,6 +25,6 @@ class Nyaa(BaseProvider):
             t.title = cols[1].find('a').text
             t.size = cols[3].text
             t.seeds = cols[4].text
-            t.torrent_url = cols[2].find('a').get('href')+"&magnet=1"
+            t.torrent_url = cols[2].find('a').get('href') + "&magnet=1"
             torrents.append(t)
         return torrents
