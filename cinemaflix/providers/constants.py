@@ -1,4 +1,4 @@
-TPB_URL = "https://thepiratebay.la"
+TPB_URL = "https://thepiratebay.org"
 KICKASS_URL = "http://kat.cr"
 EZTV_URL = "http://eztvapi.co.za/"
 NYAA_URL = "http://www.nyaa.se/"
